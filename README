@@ -1,0 +1,96 @@
+1. General
+----------
+
+This program is used to create Microsoft compatible boot records. It is able
+to do the same as Microsoft "fdisk /mbr" to a hard disk. It is also able to
+do the same as Microsoft "sys d:" to a floppy or FAT32 partition except that
+it does not copy any system files, only the boot record is written. The
+specifications of boot records is taken from
+http://www.geocities.com/thestarman3/asm/mbr/MBR_in_detail.htm
+
+The program is useful when using Linux to restore a backup of a reference
+Microsoft Windows installation.
+
+2. Installation
+---------------
+
+Step 1, unpack the archive:
+
+tar -xzvf ms-sys*.tgz
+
+Step 2, compile:
+
+make
+
+Step 3, become root and install
+
+su (and give password)
+make install
+
+3. Examples
+-----------
+
+Please note that Windows ME is not useful for making standalone bootable
+floppies. However, Win9x and DOS works fine with example 1 and example 3.
+
+Example 1, creating a 1.68 MB bootable floppy:
+This example assumes that you have your windows installation mounted at /dosc
+and also have mtools and fdformat installed.
+
+fdformat /dev/fd0u1680
+mformat a:
+ms-sys -w /dev/fd0
+mcopy /dosc/io.sys a:
+mcopy /dosc/msdos.sys a:
+mcopy /dosc/command.com a:
+
+
+Example 2, restoring a backup to a fresh hard disk:
+
+Step 1, use GNU parted to create your FAT32 partition and file system:
+
+parted (then create partition and file system)
+
+Step 2, write the MBR:
+
+ms-sys -w /dev/hda
+
+Step 3, write the FAT32 partition boot record:
+
+ms-sys -w /dev/hda1
+
+Step 4, mount your new filesystem:
+
+mount /dev/hda1 /mnt
+
+Step 5, read your backup
+
+cd /mnt; tar -xzvf /path/to/my_windows_backup_file.tgz
+
+
+Example 3, creating a bootable 2.8 MB floppy image for use with an el-torito
+bootable CD:
+
+dd if=/dev/zero of=floppy288.img bs=1024 count=2880
+/sbin/mkdosfs floppy288.img
+ms-sys -1 -f floppy288.img
+su
+mount -o loop floppy288.img /mnt
+cp msdos.sys /mnt/
+cp io.sys /mnt/
+cp command.com /mnt/
+(it might also be a good idea to add a config.sys and autoexec.bat with
+ CDROM support)
+umount /mnt
+exit
+cp floppy288.img cd-files/eltorito.img
+mkisofs -b eltorito.img -c eltorito.cat -o cdimage.iso cd-files
+(burn the file cdimage.iso to a CD with cdrecord or another program)
+
+4. Documentation
+----------------
+
+There are no man-pages for this program, but you will get some help by typing:
+
+ms-sys --help
+
