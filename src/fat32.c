@@ -29,28 +29,38 @@ int is_fat_32_br(FILE *fp)
 int entire_fat_32_br_matches(FILE *fp)
 {
    #include "br_fat32_0x0.h"
-   #include "br_fat32_0x47.h"
+   #include "br_fat32_0x52.h"
    #include "br_fat32_0x3f0.h"
 
    return
       ( contains_data(fp, 0x0, br_fat32_0x0, sizeof(br_fat32_0x0)) &&
 	/* BIOS Parameter Block might differ between systems */
-	contains_data(fp, 0x47, br_fat32_0x47, sizeof(br_fat32_0x47)) &&
+	contains_data(fp, 0x52, br_fat32_0x52, sizeof(br_fat32_0x52)) &&
 	/* Cluster information might differ between systems */
 	contains_data(fp, 0x3f0, br_fat32_0x3f0, sizeof(br_fat32_0x3f0)) );
 } /* entire_fat_32_br_matches */
 
-int write_fat_32_br(FILE *fp)
+int write_fat_32_br(FILE *fp, int bKeepLabel)
 {
    #include "br_fat32_0x0.h"
    #include "br_fat32_0x47.h"
+   #include "br_fat32_0x52.h"
    #include "br_fat32_0x3f0.h"
 
-   return
-      ( write_data(fp, 0x0, br_fat32_0x0, sizeof(br_fat32_0x0)) &&
-	/* BIOS Parameter Block should not be overwritten */
-	write_data(fp, 0x47, br_fat32_0x47, sizeof(br_fat32_0x47)) &&
-	/* Cluster information is not overwritten, however, it would bo OK
-	 to write 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff here. */
-	write_data(fp, 0x3f0, br_fat32_0x3f0, sizeof(br_fat32_0x3f0)) );
+   if(bKeepLabel)
+      return
+	 ( write_data(fp, 0x0, br_fat32_0x0, sizeof(br_fat32_0x0)) &&
+	   /* BIOS Parameter Block should not be overwritten */
+	   write_data(fp, 0x52, br_fat32_0x52, sizeof(br_fat32_0x52)) &&
+	   /* Cluster information is not overwritten, however, it would bo OK
+	      to write 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff here. */
+	   write_data(fp, 0x3f0, br_fat32_0x3f0, sizeof(br_fat32_0x3f0)) );
+   else
+      return
+	 ( write_data(fp, 0x0, br_fat32_0x0, sizeof(br_fat32_0x0)) &&
+	   /* BIOS Parameter Block should not be overwritten */
+	   write_data(fp, 0x47, br_fat32_0x47, sizeof(br_fat32_0x47)) &&
+	   /* Cluster information is not overwritten, however, it would bo OK
+	      to write 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff here. */
+	   write_data(fp, 0x3f0, br_fat32_0x3f0, sizeof(br_fat32_0x3f0)) );
 } /* write_fat_32_br */

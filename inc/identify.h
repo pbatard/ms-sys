@@ -7,8 +7,10 @@
 #define AUTO_BR    1
 #define MBR        2
 #define FAT12_BR   3
-#define FAT32_BR   4
-#define NUMBER_OF_RECORD_TYPES 5
+#define FAT16_BR   4
+#define FAT32_BR   5
+#define FAT32NT_BR 6
+#define NUMBER_OF_RECORD_TYPES 7
 
 /* Returns TRUE if writing a boot record of type iBr seems like a good idea,
    otherwise FALSE */

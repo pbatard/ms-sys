@@ -1,7 +1,9 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
-23/2 2003  1.0.2    Documentation update, man-page contributed by
-                    Gurkan Sengun 
+20/9 2003  1.1.0    DOS FAT16 boot record added
+                    NT FAT32 boot record added
+
+23/2 2003  1.0.2    Documentation update, man-page added
 
 9/8 2002   1.0.1    Fixed problem compiling sv_SE.po with newer versions of
                     msgfmt

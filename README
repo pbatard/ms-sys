@@ -3,11 +3,10 @@
 
 This program is used to create Microsoft compatible boot records. It is able
 to do the same as Microsoft "fdisk /mbr" to a hard disk. It is also able to
-do the same as Microsoft "sys d:" to a floppy or FAT32 partition except that
-it does not copy any system files, only the boot record is written. The
-specifications of boot records is taken from
+do the same as Microsoft "sys d:" to a floppy or FAT partition except that
+it does not copy any system files, only the boot record is written.
+Specifications of boot records is taken from
 http://www.geocities.com/thestarman3/asm/mbr/MBR_in_detail.htm
-and http://www.open.hr/~sbrbot/boot_sector_fat32.htm
 
 The program is useful when using Linux to restore a backup of a reference
 Microsoft Windows installation.
@@ -102,9 +101,8 @@ ms-sys --help
 5. Known problems
 -----------------
 
-Current version is not compatible with NT based version of Windows like
-Windows 2000 or Windows XP. Only DOS based versions of Windows like Windows 98
-or Windows ME will work with the FAT32 boot record.
+The option --keplabel only works with FAT32 partitions, other partitions
+allways keep their label.
 
 There have been reports about unbootable FAT32 partitions created with
 "mformat -F c:". The recomended workaround is to use gnu parted to create the
@@ -112,3 +110,5 @@ partition instead. To debug this problem I will need images of the boot record
 at different times. If you get this problem please send me an email to
 henca@users.SourceForge.net for instructions on how to send me the boot record.
 
+There have been reports about problems when compiling against uClibc. More
+problem reports or suggestions of fixes are welcome!

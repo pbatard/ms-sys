@@ -1,6 +1,6 @@
 This might be done for future releases:
 
-1. Add boot records for other file systems and OSes, FAT16? IBM PC-DOS?
+1. Add boot records for other file systems and OSes, NT FAT16? IBM PC-DOS?
    To do this I will need documentation and someone willing to test the new
    features.
 
