@@ -1,8 +1,3 @@
-This will be done before version 1.0, public release:
-
-1. Put this program on the web (sourceforge?) and announce it on freshmeat.
-2. Update readme, add download site and contact email.
-
 This might be done for future releases:
 
 1. Add boot records for other file systems and OSes, FAT16? IBM PC-DOS?

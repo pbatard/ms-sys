@@ -248,10 +248,10 @@ msgstr ""
 
 #: src/main.c:135
 msgid ""
-"Written by Henrik Carlqvist\n"
+"Written by Henrik Carlqvist (henca@users.SourceForge.net)\n"
 "\n"
 msgstr ""
-"Skriven av Henrik Carlqvist\n"
+"Skriven av Henrik Carlqvist (henca@users.SourceForge.net)\n"
 "\n"
 
 #: src/main.c:136

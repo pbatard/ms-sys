@@ -8,7 +8,7 @@
 #include "identify.h"
 #include "nls.h"
 
-#define VERSION "0.9 stable"
+#define VERSION "1.0"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -132,7 +132,7 @@ _("    -w, --write     Write automaticly selected boot record to device\n\n"));
 void print_version(void)
 {
    printf(_("ms-sys version %s\n"), VERSION);
-   printf(_("Written by Henrik Carlqvist\n\n"));
+   printf(_("Written by Henrik Carlqvist (henca@users.SourceForge.net)\n\n"));
    printf(_("Copyright (C) 2002 Free Software Foundation, Inc.\n"));
    printf(_("This is free software; see the source for copying conditions.  There is NO\n"));
    printf(_("warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"));
