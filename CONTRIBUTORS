@@ -6,3 +6,5 @@ Chris Bshaw			tested NT boot record
 Ronan Salmon			debugged NT BR and contributed missing part
 Mike Jones                      added DOS FAT16 support
 Bodo Giannone			patched to compile on systems lacking libintl.h
+Andrew Yeomans			added support for XP/DOS/zero MBRs
+Andree Leidenfrost		helped debugging mkfs.vfat problem

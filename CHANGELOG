@@ -1,5 +1,16 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+21/3 2004  1.1.3    Added switch -p to write needed partition information
+                    which might be missing when some format programs are
+                    used. The program now supports command line switch
+                    concatenation, i e "ms-sys -f2 file" instead of
+                    "ms-sys -f -2 file".
+
+16/2 2004  1.1.2    Unofficial contributed version with support for new
+                    MBRs and better MBR recognition. Instead of completing
+                    the work to make this an official release I choose to
+                    merge it into my ongoing work.
+
 4/1  2004  1.1.1    Now compiles even if libintl.h is missing
                     Replaced the -k switch with -l (--wipelabel) with the
                     inverted functionality. This functionality was also

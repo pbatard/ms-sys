@@ -11,12 +11,44 @@ int is_br(FILE *fp);
    The file position will change when this function is called! */
 int is_lilo_br(FILE *fp);
 
-/* returns TRUE if the file has a Microsoft master boot record, otherwise
+/* returns TRUE if the file has a Microsoft dos master boot record, otherwise
    FALSE.The file position will change when this function is called! */
 int is_dos_mbr(FILE *fp);
 
-/* Writes a master boot record to a file, returns TRUE on success, otherwise
+/* returns TRUE if the file has a Microsoft 95b master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_95b_mbr(FILE *fp);
+
+/* returns TRUE if the file has a Microsoft 2000 master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_2000_mbr(FILE *fp);
+
+/* returns TRUE if the file has a syslinux master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_syslinux_mbr(FILE *fp);
+
+/* returns TRUE if the file has a zeroed master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_zero_mbr(FILE *fp);
+
+/* Writes a dos master boot record to a file, returns TRUE on success, otherwise
    FALSE */
-int write_mbr(FILE *fp);
+int write_dos_mbr(FILE *fp);
+
+/* Writes a 95b master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_95b_mbr(FILE *fp);
+
+/* Writes a 2000 master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_2000_mbr(FILE *fp);
+
+/* Writes a syslinux master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_syslinux_mbr(FILE *fp);
+
+/* Writes an empty (zeroed) master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_zero_mbr(FILE *fp);
 
 #endif
