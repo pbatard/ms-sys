@@ -27,6 +27,7 @@ EXTRA_LDFLAGS =
 PREFIX = /usr/local
 BINDIR = $(PREFIX)/bin
 LOCALEDIR = $(PREFIX)/share/locale
+MANDIR = $(PREFIX)/man
 
 # Where your .c-files live
 SRC = src
@@ -37,6 +38,8 @@ DEP = dep
 # Where any .po-files live for native language support, eg sv_SE.po or de_DE.po
 # A skeleton .po-file could be created by "make messages"
 PO  = po
+# Where your man-pages live
+MAN = man
 # Where .mo-files will be created
 MO  = mo
 # Where .o-files will be created
@@ -70,23 +73,26 @@ INC_FILES = $(wildcard $(INC)/*.h)
 
 MESSAGES = $(PO)/messages.po
 
+MAN_SRC = $(wildcard $(MAN)/*.*)
+
 PO_FILES = $(filter-out $(MESSAGES),$(wildcard $(PO)/*.po))
 MO_FILES = $(PO_FILES:$(PO)/%.po=$(MO)/%.mo)
 LANGUAGES = $(PO_FILES:$(PO)/%.po=%)
 NLS_FILES = $(LANGUAGES:%=$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo)
+MAN_FILES = $(foreach FILE, $(MAN_SRC), \
+              $(MANDIR)/man$(subst .,,$(suffix $(FILE)))/$(FILE:$(MAN)/%=%))
 
 FILES = $(SRC_FILES:$(SRC)/%.c=%)
 
 OBJS = $(FILES:%=$(OBJ)/%.o)
 DEPS = $(FILES:%=$(DEP)/%.d)
 
-
 all debug: $(BIN)/$(PACKAGE) $(MO_FILES)
 
-install: $(BINDIR)/$(PACKAGE) $(NLS_FILES)
+install: $(BINDIR)/$(PACKAGE) $(NLS_FILES) $(MAN_FILES)
 
 uninstall:
-	$(RM) $(BINDIR)/$(PACKAGE) $(NLS_FILES)
+	$(RM) $(BINDIR)/$(PACKAGE) $(NLS_FILES) $(MAN_FILES)
 
 messages: $(MESSAGES)
 
@@ -107,6 +113,9 @@ $(BINDIR)/%: $(BIN)/%
 $(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo: $(MO)/%.mo
 	mkdir -p $(LOCALEDIR)/$*/$(MESSDIR)
 	install -m 644 $^ $@
+
+$(MANDIR)/%: $(MAN)/$(*F)
+	install -m 644 $(MAN)/$(*F) $@
 
 $(BIN)/%: $(OBJS) 
 	$(CC) -o $@ $^ $(LDFLAGS)

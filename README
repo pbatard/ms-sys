@@ -7,6 +7,7 @@ do the same as Microsoft "sys d:" to a floppy or FAT32 partition except that
 it does not copy any system files, only the boot record is written. The
 specifications of boot records is taken from
 http://www.geocities.com/thestarman3/asm/mbr/MBR_in_detail.htm
+and http://www.open.hr/~sbrbot/boot_sector_fat32.htm
 
 The program is useful when using Linux to restore a backup of a reference
 Microsoft Windows installation.
@@ -23,6 +24,7 @@ tar -xzvf ms-sys*.tgz
 
 Step 2, compile:
 
+cd ms-sys
 make
 
 Step 3, become root and install
@@ -93,7 +95,20 @@ mkisofs -b eltorito.img -c eltorito.cat -o cdimage.iso cd-files
 4. Documentation
 ----------------
 
-There are no man-pages for this program, but you will get some help by typing:
+There are is a man-page for ms-sys, and you will get some help by typing:
 
 ms-sys --help
+
+5. Known problems
+-----------------
+
+Current version is not compatible with NT based version of Windows like
+Windows 2000 or Windows XP. Only DOS based versions of Windows like Windows 98
+or Windows ME will work with the FAT32 boot record.
+
+There have been reports about unbootable FAT32 partitions created with
+"mformat -F c:". The recomended workaround is to use gnu parted to create the
+partition instead. To debug this problem I will need images of the boot record
+at different times. If you get this problem please send me an email to
+henca@users.SourceForge.net for instructions on how to send me the boot record.
 

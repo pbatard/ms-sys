@@ -8,7 +8,7 @@
 #include "identify.h"
 #include "nls.h"
 
-#define VERSION "1.0.1"
+#define VERSION "1.0.2"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -119,6 +119,8 @@ void print_help(const char *szCommand)
      _("    -3, --fat32     Write a FAT32 partition boot record to device\n"));
    printf(_("    -f, --force     Force writing of boot record\n"));
    printf(_("    -h, --help      Display this help and exit\n"));
+   /* A planned feature for next beta version */
+   /* printf(_("    -k, --keeplabel Do not reset disk label\n")); */
    printf(_("    -m, --mbr       Write a master boot record to device\n"));
    printf(_("    -v, --version   Show program version\n"));
    printf(
