@@ -1,6 +1,11 @@
 #include <linux/hdreg.h>
 #include <linux/fd.h>
+/* Ugly fix for compability with both older libc and newer kernels */
+#include <sys/mount.h>
+#ifndef BLKGETSIZE
 #include <linux/fs.h>
+#endif
+/* end of ugly fix */
 #include <sys/ioctl.h>
 
 #include "br.h"

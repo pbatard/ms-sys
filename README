@@ -63,6 +63,15 @@ Step 3, write the FAT32 partition boot record:
 
 ms-sys -w /dev/hda1
 
+Step 3b, write partition info and drive id to partition:
+
+ms-sys -p /dev/hda1
+
+This step might be needed depending on which program was used to format the
+partition. If the program was formatted with gnu parted this step could be
+skipped. It is also possible to combine this flag with the previous step
+like this: ms-sys -wp /dev/hda1
+
 Step 4, mount your new filesystem:
 
 mount /dev/hda1 /mnt
@@ -94,7 +103,7 @@ mkisofs -b eltorito.img -c eltorito.cat -o cdimage.iso cd-files
 4. Documentation
 ----------------
 
-There are is a man-page for ms-sys, and you will get some help by typing:
+There is a man-page for ms-sys, and you will get some help by typing:
 
 ms-sys --help
 

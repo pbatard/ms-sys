@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "file.h"
 #include "fat12.h"

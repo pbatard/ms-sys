@@ -8,3 +8,4 @@ Mike Jones                      added DOS FAT16 support
 Bodo Giannone			patched to compile on systems lacking libintl.h
 Andrew Yeomans			added support for XP/DOS/zero MBRs
 Andree Leidenfrost		helped debugging mkfs.vfat problem
+Matthew Brett			reported 2.6 kernel bug, provided shell-account
