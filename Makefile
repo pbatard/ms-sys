@@ -55,7 +55,8 @@ INCDIRS = $(INC)
 CC = gcc
 INCLUDES = $(INCDIRS:%=-I %)
 CFLAGS = -O2 -ansi -pedantic -Wall -c $(INCLUDES) \
-         -D PACKAGE=\"$(PACKAGE)\" -D LOCALEDIR=\"$(LOCALEDIR)\"
+         -D PACKAGE=\"$(PACKAGE)\" -D LOCALEDIR=\"$(LOCALEDIR)\" \
+          $(EXTRA_CFLAGS)
 ifeq ($(MAKECMDGOALS),debug)
 CFLAGS = -g -ansi -pedantic -Wall -c $(INCLUDES) \
          -D PACKAGE=\"$(PACKAGE)\" -D LOCALEDIR=\"$(LOCALEDIR)\" \

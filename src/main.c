@@ -8,7 +8,7 @@
 #include "identify.h"
 #include "nls.h"
 
-#define VERSION "1.0"
+#define VERSION "1.0.1"
 
 void print_help(const char *szCommand);
 void print_version(void);

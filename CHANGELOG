@@ -1,0 +1,9 @@
+Date       Version  Comment
+---------------------------------------------------------------------------
+9/8 2002   1.0.1    Fixed problem compiling sv_SE.po with newer versions of
+                    msgfmt
+
+4/8 2002   1.0      First public release. Documentation updated with
+                    SourceForge addresses for web and email contact.
+
+30/7 2002  0.9      First stable release

@@ -10,7 +10,7 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Henrik Carlqvist <Henrik.Carlqvist@2.sbbs.se>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/file.c:14
@@ -181,10 +181,6 @@ msgstr "FAT32 boot record skrevs till %s\n"
 #, c-format
 msgid "Failed writing FAT32 boot record to %s\n"
 msgstr "Misslyckades med att skriva FAT32 boot record till %s\n"
-
-#: src/main.c:105 src/sanity.c:166
-msgid "Whoops, internal error, unknown boot record\n"
-msgstr "Hoppsan, internt fel, okänd boot record\n"
 
 #: src/main.c:115
 #, c-format
