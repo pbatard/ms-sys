@@ -285,8 +285,8 @@ msgid "    -h, --help      Display this help and exit\n"
 msgstr "    -h, --help      Visa denna hjälp och avsluta\n"
 
 #: src/main.c:155
-msgid "    -k, --keeplabel Do not reset partition disk label\n"
-msgstr "    -k, --keeplabel Nollställ inte volymens etikett\n"
+msgid "    -l, --wipelabel Reset partition disk label in boot record\n"
+msgstr "    -l, --wipelabel Nollställ volymens etikett i boot record\n"
 
 #: src/main.c:156
 msgid "    -m, --mbr       Write a master boot record to device\n"

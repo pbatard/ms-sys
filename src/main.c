@@ -10,7 +10,7 @@
 #include "identify.h"
 #include "nls.h"
 
-#define VERSION "1.1.0"
+#define VERSION "1.1.1"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
    int iBr = NO_WRITING;
    int bForce = 0;
    int bPrintVersion = 0;
-   int bKeepLabel = 0;
+   int bKeepLabel = 1;
    int iRet = 0;
 
    nls_init();
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
       break;
       case FAT12_BR:
       {
-	 if(write_fat_12_br(fp))
+	 if(write_fat_12_br(fp, bKeepLabel))
 	    printf(_("FAT12 boot record successfully written to %s\n"),
 		   argv[argc-1]);
 	 else
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
       break;
       case FAT16_BR:
       {
-	 if(write_fat_16_br(fp))
+	 if(write_fat_16_br(fp, bKeepLabel))
 	    printf(_("FAT16 boot record successfully written to %s\n"),
 		   argv[argc-1]);
 	 else
@@ -152,7 +152,7 @@ void print_help(const char *szCommand)
      _("    -6, --fat16     Write a FAT16 partition DOS boot record to device\n"));
    printf(_("    -f, --force     Force writing of boot record\n"));
    printf(_("    -h, --help      Display this help and exit\n"));
-   printf(_("    -k, --keeplabel Do not reset partition disk label\n"));
+   printf(_("    -l, --wipelabel Reset partition disk label in boot record\n"));
    printf(_("    -m, --mbr       Write a master boot record to device\n"));
    printf(_("    -v, --version   Show program version\n"));
    printf(
@@ -180,7 +180,7 @@ int parse_switches(int argc, char **argv, int *piBr,
    *piBr = NO_WRITING;
    *pbForce = 0;
    *pbPrintVersion = 0;
-   *pbKeepLabel = 0;
+   *pbKeepLabel = 1;
    
    if(argc < 2)
       return 1;
@@ -209,9 +209,9 @@ int parse_switches(int argc, char **argv, int *piBr,
       else if(( ! strcmp("-f", argv[argc])) ||
 	      ( ! strcmp("--force", argv[argc])))
 	 *pbForce = 1;
-      else if(( ! strcmp("-k", argv[argc])) ||
-	      ( ! strcmp("--keeplabel", argv[argc])))
-	 *pbKeepLabel = 1;
+      else if(( ! strcmp("-l", argv[argc])) ||
+	      ( ! strcmp("--wipelabel", argv[argc])))
+	 *pbKeepLabel = 0;
       else if(( ! strcmp("-m", argv[argc])) ||
 	      ( ! strcmp("--mbr", argv[argc])))
 	 *piBr = MBR;

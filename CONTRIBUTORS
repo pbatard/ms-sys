@@ -5,3 +5,4 @@ Ulf Gustafsson			contributed an NT boot record
 Chris Bshaw			tested NT boot record
 Ronan Salmon			debugged NT BR and contributed missing part
 Mike Jones                      added DOS FAT16 support
+Bodo Giannone			patched to compile on systems lacking libintl.h

@@ -15,7 +15,9 @@ PACKAGE = ms-sys
 
 # Add anything extra you might need when comipiling below
 # Example: EXTRA_CFLAGS = -D MY_DEFINE=1
-EXTRA_CFLAGS =
+
+# The row below is a workaround for systems which lack libintl.h
+EXTRA_CFLAGS = -idirafter include-fallback
 
 # Add anything extra you might need when linking below
 # Example: EXTRA_LDFLAGS = -lm

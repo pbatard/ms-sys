@@ -18,6 +18,6 @@ int entire_fat_16_br_matches(FILE *fp);
 
 /* Writes a FAT16 boot record to a file, returns TRUE on success, otherwise
    FALSE */
-int write_fat_16_br(FILE *fp);
+int write_fat_16_br(FILE *fp, int bKeepLabel);
 
 #endif

@@ -21,13 +21,21 @@ int entire_fat_12_br_matches(FILE *fp)
 	contains_data(fp, 0x3e, br_fat12_0x3e, sizeof(br_fat12_0x3e)) );
 } /* entire_fat_12_br_matches */
 
-int write_fat_12_br(FILE *fp)
+int write_fat_12_br(FILE *fp, int bKeepLabel)
 {
+   #include "label_11_char.h"
    #include "br_fat12_0x0.h"
    #include "br_fat12_0x3e.h"
 
-   return
-      ( write_data(fp, 0x0, br_fat12_0x0, sizeof(br_fat12_0x0)) &&
-	/* BIOS Parameter Block might differ between systems */
-	write_data(fp, 0x3e, br_fat12_0x3e, sizeof(br_fat12_0x3e)) );
+   if(bKeepLabel)
+      return
+	 ( write_data(fp, 0x0, br_fat12_0x0, sizeof(br_fat12_0x0)) &&
+	   /* BIOS Parameter Block might differ between systems */
+	   write_data(fp, 0x3e, br_fat12_0x3e, sizeof(br_fat12_0x3e)) );
+   else
+      return
+	 ( write_data(fp, 0x0, br_fat12_0x0, sizeof(br_fat12_0x0)) &&
+	   /* BIOS Parameter Block might differ between systems */
+	   write_data(fp, 0x2b, label_11_char, sizeof(label_11_char)) &&
+	   write_data(fp, 0x3e, br_fat12_0x3e, sizeof(br_fat12_0x3e)) );
 } /* write_fat_12_br */

@@ -3,7 +3,11 @@
 
 #include <libintl.h>
 
+#ifdef NO_LIBINTL_OR_GETTEXT
+#define _(String) (String)
+#else
 #define _(String) gettext(String)
+#endif
 #define gettext_noop(String) (String)
 #define N_(String) gettext_noop(String)
 

@@ -12,7 +12,7 @@ int entire_fat_12_br_matches(FILE *fp);
 
 /* Writes a FAT12 boot record to a file, returns TRUE on success, otherwise
    FALSE */
-int write_fat_12_br(FILE *fp);
+int write_fat_12_br(FILE *fp, int bKeepLabel);
 
 
 #endif

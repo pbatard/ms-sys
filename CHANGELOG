@@ -1,5 +1,10 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+4/1  2004  1.1.1    Now compiles even if libintl.h is missing
+                    Replaced the -k switch with -l (--wipelabel) with the
+                    inverted functionality. This functionality was also
+                    implemented for FAT12 and FAT16.
+
 20/9 2003  1.1.0    DOS FAT16 boot record added
                     NT FAT32 boot record added
 

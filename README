@@ -101,9 +101,6 @@ ms-sys --help
 5. Known problems
 -----------------
 
-The option --keplabel only works with FAT32 partitions, other partitions
-allways keep their label.
-
 There have been reports about unbootable FAT32 partitions created with
 "mformat -F c:". The recomended workaround is to use gnu parted to create the
 partition instead. To debug this problem I will need images of the boot record
