@@ -116,5 +116,15 @@ partition instead. Since version 1.1.3 ms-sys has the switch -p which
 is supposed to fix this problem. The problem has also been reported on
 partitions formatted with mkdosfs and mkfs.vfat.
 
+Unfortunately, there have also been some reports that the switch -p does not
+always fix the problem above. To do further work on the -p switch I will need
+someone able to reproduce the problem who is willing to do some testing.
+
+There have been yet another problem reported about the -p switch and gnu
+parted together with Linux kernel 2.6. The problem is that kernel 2.6 might
+report a geometry incompatible with other operating systems. There is a
+detailed description of the problem at
+http://groups-beta.google.com/group/linux.kernel/msg/404d8683ce302cf2
+
 There have been reports about problems when compiling against uClibc. More
 problem reports or suggestions of fixes are welcome!

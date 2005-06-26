@@ -1,5 +1,10 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+26/6 2005  2.1.0    Now ms-sys is able to identify an ms-dos MBR with the
+                    undocumented F2 instruction.
+                    Fixed bug in Makefile which make Makefile fail to install
+                    files unless target directories already exists.
+
 5/6  2004  2.0.0    Now ms-sys should compile cleanly also with a 2.6 Linux
                     kernel based distribution.
 

@@ -15,6 +15,11 @@ int is_lilo_br(FILE *fp);
    FALSE.The file position will change when this function is called! */
 int is_dos_mbr(FILE *fp);
 
+/* returns TRUE if the file has a Microsoft dos master boot record with the
+   undocumented F2 instruction, otherwise FALSE. The file position will change
+   when this function is called! */
+int is_dos_f2_mbr(FILE *fp);
+
 /* returns TRUE if the file has a Microsoft 95b master boot record, otherwise
    FALSE.The file position will change when this function is called! */
 int is_95b_mbr(FILE *fp);

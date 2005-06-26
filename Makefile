@@ -110,14 +110,14 @@ clean:
 	$(RM) $(filter-out $(BIN)/CVS,$(wildcard $(BIN)/*))
 
 $(BINDIR)/%: $(BIN)/%
-	install -m 755 $^ $@
+	install -D -m 755 $^ $@
 
 $(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo: $(MO)/%.mo
 	mkdir -p $(LOCALEDIR)/$*/$(MESSDIR)
-	install -m 644 $^ $@
+	install -D -m 644 $^ $@
 
 $(MANDIR)/%: $(MAN)/$(*F)
-	install -m 644 $(MAN)/$(*F) $@
+	install -D -m 644 $(MAN)/$(*F) $@
 
 $(BIN)/%: $(OBJS) 
 	$(CC) -o $@ $^ $(LDFLAGS)

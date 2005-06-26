@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-03-20 19:56+0100\n"
+"POT-Creation-Date: 2004-10-05 12:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Henrik Carlqvist <henca@users.SourceForge.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,67 +22,67 @@ msgstr "Fel: contains_data anropad med uiLen > %d,\n"
 msgid "please increase MAX_DATA_LEN in file.h\n"
 msgstr "Öka MAX_DATA_LEN i file.h\n"
 
-#: src/identify.c:108
+#: src/identify.c:113
 #, c-format
 msgid "%s does not seem to be a disk device,\n"
 msgstr "%s tycks inte vara en diskenhet,\n"
 
-#: src/identify.c:110 src/identify.c:120 src/identify.c:130
+#: src/identify.c:115 src/identify.c:125 src/identify.c:135
 msgid "use the switch -f to force writing of a master boot record\n"
 msgstr "använd flaggan -f för att tvinga fram skrivandet av en master boot record\n"
 
-#: src/identify.c:118
+#: src/identify.c:123
 #, c-format
 msgid "%s seems to be a floppy disk device,\n"
 msgstr "%s tycks vara en diskettenhet,\n"
 
-#: src/identify.c:128
+#: src/identify.c:133
 #, c-format
 msgid "%s seems to be a disk partition device,\n"
 msgstr "%s tycks vara en diskpartitionsenhet,\n"
 
-#: src/identify.c:142
+#: src/identify.c:147
 #, c-format
 msgid "%s does not seem to be a floppy disk device,\n"
 msgstr "%s tycks inte vara någon diskettenhet,\n"
 
-#: src/identify.c:145 src/identify.c:156
+#: src/identify.c:150 src/identify.c:161
 msgid "use the switch -f to force writing of a FAT12 boot record\n"
 msgstr "använd flaggan -f för att tvinga fram skrivandet av en FAT12 boot record\n"
 
-#: src/identify.c:153
+#: src/identify.c:158
 #, c-format
 msgid "%s does not seem to have a FAT12 file system,\n"
 msgstr "%s tycks inte ha något FAT12 filsystem,\n"
 
-#: src/identify.c:168 src/identify.c:194 src/identify.c:220
+#: src/identify.c:173 src/identify.c:199 src/identify.c:225
 #, c-format
 msgid "%s does not seem to be a disk partition device,\n"
 msgstr "%s tycks inte vara någon diskpartitionsenhet,\n"
 
-#: src/identify.c:171 src/identify.c:182
+#: src/identify.c:176 src/identify.c:187
 msgid "use the switch -f to force writing of a FAT16 boot record\n"
 msgstr "använd flaggan -f för att tvinga fram skrivandet av en FAT16 DOS boot record\n"
 
-#: src/identify.c:179
+#: src/identify.c:184
 #, c-format
 msgid "%s does not seem to have a FAT16 file system,\n"
 msgstr "%s tycks inte ha något FAT16 filsystem,\n"
 
-#: src/identify.c:197 src/identify.c:208
+#: src/identify.c:202 src/identify.c:213
 msgid "use the switch -f to force writing of a FAT32 DOS boot record\n"
 msgstr "använd flaggan -f för att tvinga fram skrivandet av en FAT32 DOS boot record\n"
 
-#: src/identify.c:205 src/identify.c:231
+#: src/identify.c:210 src/identify.c:236
 #, c-format
 msgid "%s does not seem to have a FAT32 file system,\n"
 msgstr "%s tycks inte ha något FAT32 filsystem,\n"
 
-#: src/identify.c:223 src/identify.c:234
+#: src/identify.c:228 src/identify.c:239
 msgid "use the switch -f to force writing of a FAT32 NT boot record\n"
 msgstr "använd flaggan -f för att tvinga fram skrivandet av en FAT32 NT boot record\n"
 
-#: src/identify.c:244 src/main.c:220
+#: src/identify.c:249 src/main.c:220
 msgid "Whoops, internal error, unknown boot record\n"
 msgstr "Hoppsan, internt fel, okänd boot record\n"
 
@@ -91,122 +91,130 @@ msgstr "Hoppsan, internt fel, okänd boot record\n"
 msgid "%s has a FAT12 file system.\n"
 msgstr "%s har ett FAT12 filsystem.\n"
 
-#: src/identify.c:258
+#: src/identify.c:263
 #, c-format
 msgid "%s has a FAT16 file system.\n"
 msgstr "%s har ett FAT16 filsystem.\n"
 
-#: src/identify.c:260
+#: src/identify.c:265
 #, c-format
 msgid "%s has a FAT32 file system.\n"
 msgstr "%s har ett FAT32 filsystem.\n"
 
-#: src/identify.c:262
+#: src/identify.c:267
 #, c-format
 msgid "%s has an x86 boot sector,\n"
 msgstr "%s har en x86 boot sector,\n"
 
-#: src/identify.c:265
+#: src/identify.c:270
 #, c-format
 msgid "%s has no x86 boot sector\n"
 msgstr "%s har ingen x86 boot sector,\n"
 
-#: src/identify.c:271
+#: src/identify.c:276
 msgid "it is exactly the kind of FAT12 boot record this program\n"
 msgstr "det är precis en likadan FAT12 boot record som detta program\n"
 
 
-#: src/identify.c:273
+#: src/identify.c:278
 msgid "would create with the switch -1 on a floppy.\n"
 msgstr "skulle skriva med flaggan -1 på en diskett.\n"
 
 
-#: src/identify.c:280
+#: src/identify.c:285
 msgid "it is exactly the kind of FAT16 boot record this program\n"
 msgstr "det är precis en likadan FAT16 DOS boot record som detta program\n"
 
-#: src/identify.c:282
+#: src/identify.c:287
 msgid "would create with the switch -6 on a FAT16 partition.\n"
 msgstr "skulle skriva med flaggan -6 på en FAT16 partition.\n"
 
-#: src/identify.c:287
+#: src/identify.c:292
 msgid "it is exactly the kind of FAT32 DOS boot record this program\n"
 msgstr "det är precis en likadan FAT32 DOS boot record som detta program\n"
 
-#: src/identify.c:289
+#: src/identify.c:294
 msgid "would create with the switch -3 on a FAT32 partition.\n"
 msgstr "skulle skriva med flaggan -3 på en FAT32 partition.\n"
 
-#: src/identify.c:294
+#: src/identify.c:299
 msgid "it is exactly the kind of FAT32 NT boot record this program\n"
 msgstr "det är precis en likadan FAT32 NT boot record som detta program\n"
 
-#: src/identify.c:296
+#: src/identify.c:301
 msgid "would create with the switch -2 on a FAT32 partition.\n"
 msgstr "skulle skriva med flaggan -2 på en FAT32 partition.\n"
 
-#: src/identify.c:301
+#: src/identify.c:306
 msgid "it seems to be a FAT16 or FAT32 boot record, but it\n"
 msgstr "det tycks vara en FAT16 eller FAT32 boot record, men\n"
 
-#: src/identify.c:303
+#: src/identify.c:308
 msgid "differs from what this program would create with the\n"
 msgstr "skiljer sig från vad detta program skulle skriva med\n"
 
-#: src/identify.c:304
+#: src/identify.c:309
 msgid "switch -6, -2 or -3 on a FAT16 or FAT32 partition.\n"
 msgstr "flaggan -6, -2 eller -3 på en FAT16 eller FAT32 partition.\n"
 
-#: src/identify.c:309
+#: src/identify.c:314
 msgid "it seems to be a LILO boot record, please use lilo to\n"
 msgstr "det tycks vara en LILO boot record, använd lilo för att\n"
 
-#: src/identify.c:310
+#: src/identify.c:315
 msgid "create such boot records.\n"
 msgstr "skapa en sådan boot record.\n"
 
-#: src/identify.c:315
+#: src/identify.c:320
 msgid "it is a Microsoft DOS/NT/95A master boot record, like the one this\n"
 msgstr "det är en Microsoft DOS/NT/95A master boot record, en sådan skapas\n"
 
-#: src/identify.c:317
+#: src/identify.c:322 src/identify.c:331
 msgid "program creates with the switch -d on a hard disk device.\n"
 msgstr "av detta program med flaggan -d på en hårddiskenhet.\n"
 
-#: src/identify.c:322
+#: src/identify.c:327
+msgid "it is a Microsoft DOS/NT/95A master boot record with the undocumented\n"
+msgstr "det är en Microsoft DOS/NT/95A master boot record med den odokumenterade\n"
+
+#: src/identify.c:329
+msgid "F2 instruction. You will get equal functionality with the MBR this\n"
+msgstr "F2 instruktionen. Du får motsvarande funktionalitet\n"
+
+#: src/identify.c:336
 msgid ""
 "it is a Microsoft 95B/98/98SE/ME master boot record, like the one this\n"
 msgstr "det är en Microsoft 95B/98/98SE/ME master boot record, en sådan skapas\n"
 
-#: src/identify.c:324
+#: src/identify.c:338
 msgid "program creates with the switch -9 on a hard disk device.\n"
 msgstr "av detta program med flaggan -9 på en hårddiskenhet.\n"
 
-#: src/identify.c:329
+#: src/identify.c:343
 msgid "it is a Microsoft 2000/XP/2003 master boot record, like the one this\n"
 msgstr "det är en Microsoft 2000/XP/2003 master boot record, en sådan skapas\n"
 
-#: src/identify.c:331
+#: src/identify.c:345
 msgid "program creates with the switch -m on a hard disk device.\n"
 msgstr "av detta program med flaggan -m på en hårddiskenhet.\n"
 
-#: src/identify.c:336
+#: src/identify.c:350
 msgid "it is a public domain syslinux master boot record, like the one this\n"
 msgstr "det är en fri syslinux master boot record, en sådan skapas\n"
 
-#: src/identify.c:338
+#: src/identify.c:352
 msgid "program creates with the switch -s on a hard disk device.\n"
 msgstr "av detta program med flaggan -s på en hårddiskenhet.\n"
 
-#: src/identify.c:343
+#: src/identify.c:357
 msgid "it is a zeroed non-bootable master boot record, like the one this\n"
 msgstr "det är en nollställd, icke-bootbar master boot record, en sådan skapas\n"
 
-#: src/identify.c:345
+#: src/identify.c:359
 msgid "program creates with the switch -z on a hard disk device.\n"
 msgstr "av detta program med flaggan -z på en hårddiskenhet.\n"
 
-#: src/identify.c:348
+#: src/identify.c:362
 msgid "it is an unknown boot record\n"
 msgstr "det är en okänd boot record\n"
 

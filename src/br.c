@@ -32,6 +32,16 @@ int is_dos_mbr(FILE *fp)
       contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
 } /* is_dos_mbr */
 
+int is_dos_f2_mbr(FILE *fp)
+{
+   #include "mbr_dos_f2.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      contains_data(fp, 0x0, mbr_dos_f2_0x0, sizeof(mbr_dos_f2_0x0)) &&
+      contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* is_dos_f2_mbr */
+
 int is_95b_mbr(FILE *fp)
 {
    #include "mbr_95b.h"

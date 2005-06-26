@@ -321,6 +321,15 @@ void diagnose(FILE *fp, const char *szPath)
 	 printf(
 	    _("program creates with the switch -d on a hard disk device.\n"));
    }
+   else if(is_dos_f2_mbr(fp))
+   {
+	 printf(
+	    _("it is a Microsoft DOS/NT/95A master boot record with the undocumented\n"));
+	 printf(
+	    _("F2 instruction. You will get equal functionality with the MBR this\n"));
+	 printf(
+	    _("program creates with the switch -d on a hard disk device.\n"));
+   }
    else if(is_95b_mbr(fp))
    {
 	 printf(
