@@ -93,6 +93,26 @@ unsigned long partition_start_sector(FILE *fp)
       return 0L;
 } /* partition_start_sector */
 
+unsigned short partition_number_of_heads(FILE *fp)
+{
+   int iRes1;
+   int iRes2;
+   long lSectors;
+   struct hd_geometry sGeometry;
+   int iFd = fileno(fp);
+   
+   iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
+#ifdef HDIO_REQ
+   iRes2 = ioctl(iFd, HDIO_REQ, &sGeometry);
+#else
+   iRes2 = ioctl(iFd, HDIO_GETGEO, &sGeometry);
+#endif
+   if(! (iRes1 && iRes2) )
+      return (unsigned short) sGeometry.heads;
+   else
+      return 0;
+} /* partition_number_of_heads */
+
 int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
 {
    int bIsDiskDevice = is_disk_device(fp);

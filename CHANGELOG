@@ -1,5 +1,10 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+3/8  2005  2.1.1    Now the -p switch also writes the number of heads in BPB.
+                    Modified Makefile to work with newer version of gcc.
+                    Unfortunately it no longer works with older versions of 
+                    gcc as the output from the switch -MM has changed.
+
 26/6 2005  2.1.0    Now ms-sys is able to identify an ms-dos MBR with the
                     undocumented F2 instruction.
                     Fixed bug in Makefile which make Makefile fail to install

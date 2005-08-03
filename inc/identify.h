@@ -18,6 +18,8 @@
 
 /* Returns the number of sectors on disk before partition */
 unsigned long partition_start_sector(FILE *fp);
+/* Returns the number of heads for the drive of a partition */
+unsigned short partition_number_of_heads(FILE *fp);
 
 /* Returns TRUE if writing a boot record of type iBr seems like a good idea,
    otherwise FALSE */

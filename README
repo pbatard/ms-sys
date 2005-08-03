@@ -117,8 +117,9 @@ is supposed to fix this problem. The problem has also been reported on
 partitions formatted with mkdosfs and mkfs.vfat.
 
 Unfortunately, there have also been some reports that the switch -p does not
-always fix the problem above. To do further work on the -p switch I will need
-someone able to reproduce the problem who is willing to do some testing.
+always fix the problem above. That problem might be fixed since version 2.1.1.
+I need success-stories or new problem reports to verify that version 2.1.1
+really fixes the problem.
 
 There have been yet another problem reported about the -p switch and gnu
 parted together with Linux kernel 2.6. The problem is that kernel 2.6 might

@@ -11,7 +11,7 @@
 #include "nls.h"
 #include "partition_info.h"
 
-#define VERSION "2.1.0"
+#define VERSION "2.1.1"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -73,6 +73,16 @@ int main(int argc, char **argv)
 	 {
 	    printf(_("Physical disk drive id 0x80 (C:) successfully written to %s\n"),
 		   argv[argc-1]);
+	    if( write_partition_number_of_heads(fp) )
+	    {
+	       printf(_("Number of heads successfully written to %s\n"),
+		      argv[argc-1]);
+	    }
+	    else
+	    {
+	       printf(_("Failed writing number of heads to %s\n"),
+		      argv[argc-1]);
+	    }
 	 }
 	 else
 	 {
@@ -239,7 +249,7 @@ void print_help(const char *szCommand)
    printf(
       _("    -l, --wipelabel Reset partition disk label in boot record\n"));
    printf(
-      _("    -p, --partition Write partition info (hidden sectors and drive id)\n"));
+      _("    -p, --partition Write partition info (hidden sectors, heads and drive id)\n"));
    printf(
       _("                    to boot record\n"));
    printf(

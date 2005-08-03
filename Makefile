@@ -133,11 +133,9 @@ $(MO_FILES): $(MO)/%.mo: $(PO)/%.po
 
 $(DEPS): $(DEP)/%.d: $(SRC)/%.c
 ifeq ($(MAKECMDGOALS),quiet)
-	@if((printf "$@ $(OBJ)/";$(CC) -MM $(CFLAGS)  $< )> $@); then true; \
-	else rm $@; false; fi
+	@$(CC) -MM $(CFLAGS) -MT $@ $< > $@
 else
-	if((printf "$@ $(OBJ)/";$(CC) -MM $(CFLAGS)  $< )> $@); then true; \
-	else rm $@; false; fi
+	$(CC) -MM $(CFLAGS) -MT $@ $< > $@
 endif
 
 ifneq ($(MAKECMDGOALS),mrproper)
