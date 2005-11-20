@@ -1,0 +1,11 @@
+Q1: I followed all instructions but my system doesn't boot!?
+
+A1: This is most likely because you are running ms-sys in a Linux environment
+    with a 2.6 kernel. The problem is that kernel 2.6 might report a geometry
+    incompatible with other operating systems. This makes gnu parted write
+    incompatible geometry information when formatting the partition. Ms-sys
+    has the switch -p which is supposed to fix the geometry information when
+    the formatting program has failed writing this correctly, but also ms-sys
+    will write the wrong information for the same reason. This is a known
+    problem described in the README which also contains a link to a detailed
+    description and a possible workaround for the problem.

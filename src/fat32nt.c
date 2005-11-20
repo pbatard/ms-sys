@@ -18,7 +18,7 @@ int entire_fat_32_nt_br_matches(FILE *fp)
 	contains_data(fp, 0x3f0, br_fat32nt_0x3f0, sizeof(br_fat32nt_0x3f0)) &&
 	contains_data(fp, 0x1800, br_fat32nt_0x1800, sizeof(br_fat32nt_0x1800))
 	 );
-} /* entire_fat_32_br_matches */
+} /* entire_fat_32_nt_br_matches */
 
 int write_fat_32_nt_br(FILE *fp, int bKeepLabel)
 {

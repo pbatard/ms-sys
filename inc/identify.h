@@ -1,5 +1,5 @@
-#ifndef SANITY_H
-#define SANITY_H
+#ifndef IDENTIFY_H
+#define IDENTIFY_H
 
 #include <stdio.h>
 
@@ -14,7 +14,9 @@
 #define MBR_2000   8
 #define MBR_SYSLINUX   9
 #define MBR_ZERO   10
-#define NUMBER_OF_RECORD_TYPES 	11
+#define FAT16FD_BR 11
+#define FAT32FD_BR 12
+#define NUMBER_OF_RECORD_TYPES 	13
 
 /* Returns the number of sectors on disk before partition */
 unsigned long partition_start_sector(FILE *fp);

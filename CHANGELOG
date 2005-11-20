@@ -1,5 +1,12 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+20/11 2005 2.1.2    Corrected spelling of Gürkan Sengün in man-page and
+                    CONTRIBUTORS file.
+                    Added a FAQ.
+                    Renamed sv_SE.po to sv.po to fix bug described at
+                    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=336813
+                    FreeDOS FAT16 and FAT32 boot records added.
+
 3/8  2005  2.1.1    Now the -p switch also writes the number of heads in BPB.
                     Modified Makefile to work with newer version of gcc.
                     Unfortunately it no longer works with older versions of 

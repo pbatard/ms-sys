@@ -2,7 +2,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH MS-SYS 1 "February 16, 2004"
+.TH MS-SYS 1 "September 25, 2005"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -33,6 +33,12 @@ Write a FAT32 partition NT boot record to device.
 .TP
 .B \-3, \-\-fat32
 Write a FAT32 partition DOS (Win9x) boot record to device.
+.TP
+.B \-4, \-\-fat32free
+Write a FAT32 partition FreeDOS boot record to device.
+.TP
+.B \-5, \-\-fat16free
+Write a FAT16 partition FreeDOS boot record to device.
 .TP
 .B \-6, \-\-fat16
 Write a FAT16 partition DOS (Win9x) boot record to device.
@@ -169,14 +175,16 @@ many translations available.
 .br
 .SH BUGS
 There have been reports about unbootable FAT32 partitions created with
-"mformat -F c:". One workaround is to use gnu parted to create the
-partition instead. Since version 1.1.3 ms-sys has the switch \-p which
-is supposed to fix this problem. The problem has also been reported on
-partitions formatted with mkdosfs and mkfs.vfat.
+"mformat -F c:". The problem has also been reported on partitions
+formatted with mkdosfs and mkfs.vfat. One workaround is to use gnu parted
+to create the partition instead. Since version 1.1.3 ms-sys has the switch
+\-p which is supposed to fix this problem. Unfortunately, when using ms-sys
+with Linux kernel 2.6 nor the \-p switch or gnu parted might work. The only
+reliable workaround known so far is to use ms-sys with Linux kernel 2.4.
 .SH AUTHOR
-This manual page was originally written by Gurkan Sengun and since edited by
-Henrik Carlqvist. The program ms-sys is mostly written by Henrik Carlqvist,
-the file CONTRIBUTORS in the source archive contains a complete list of
-contributors.
+This manual page was originally written by G\[:u]rkan Seng\[:u]n and since
+edited by Henrik Carlqvist. The program ms-sys is mostly written by
+Henrik Carlqvist, the file CONTRIBUTORS in the source archive contains a
+complete list of contributors.
 .SH SEE ALSO
 mformat(1)  fdformat(8)  mkdosfs(8)  mkisofs(8)
