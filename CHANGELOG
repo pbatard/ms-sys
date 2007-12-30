@@ -1,5 +1,7 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+30/12 2007 2.1.3    Makefile now supports DESTDIR
+
 20/11 2005 2.1.2    Corrected spelling of Gürkan Sengün in man-page and
                     CONTRIBUTORS file.
                     Added a FAQ.

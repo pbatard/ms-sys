@@ -11,3 +11,4 @@ Andree Leidenfrost		helped debugging mkfs.vfat problem
 Matthew Brett			reported 2.6 kernel bug, provided shell-account
 Søren Holm			helped debugging BPB problem with -p switch
 Till Wimmer                     contributed FreeDOS FAT16 & FAT32 boot records
+Alon Bar-Lev                    patched Makefile to support DESTDIR

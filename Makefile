@@ -1,5 +1,6 @@
 # Generic GNU Makefile with Native Language Support
 # written by Henrik Carlqvist
+# 
 # Possible targets are:
 # make                    normal compile
 # make all                normal compile, the same as above
@@ -9,6 +10,9 @@
 # make mrproper           removes compiled files and dependencies
 # make debug              compiles with flag -g for debuggers
 # make messages           creates po/messages.po as a skeleton for NLS
+#
+# Contributors: Henrik Carlqvist
+#               Alon Bar-Lev
 
 # Name of program, compiled executable file
 PACKAGE = ms-sys
@@ -26,7 +30,7 @@ EXTRA_LDFLAGS =
 # Paths
 
 # Installation path
-PREFIX = /usr/local
+PREFIX ?= /usr/local
 BINDIR = $(PREFIX)/bin
 LOCALEDIR = $(PREFIX)/share/locale
 MANDIR = $(PREFIX)/man
@@ -57,17 +61,16 @@ MESSDIR = LC_MESSAGES
 
 INCDIRS = $(INC)
 
-CC = gcc
+CC ?= gcc
 INCLUDES = $(INCDIRS:%=-I %)
-CFLAGS = -O2 -ansi -pedantic -Wall -c $(INCLUDES) \
-         -D PACKAGE=\"$(PACKAGE)\" -D LOCALEDIR=\"$(LOCALEDIR)\" \
-          $(EXTRA_CFLAGS)
+CFLAGS ?= -O2
 ifeq ($(MAKECMDGOALS),debug)
-CFLAGS = -g -ansi -pedantic -Wall -c $(INCLUDES) \
+CFLAGS ?= -g
+endif
+CFLAGS += -ansi -pedantic -Wall -c $(INCLUDES) \
          -D PACKAGE=\"$(PACKAGE)\" -D LOCALEDIR=\"$(LOCALEDIR)\" \
           $(EXTRA_CFLAGS)
-endif
-LDFLAGS = $(EXTRA_LDFLAGS)
+LDFLAGS += $(EXTRA_LDFLAGS)
 
 
 SRC_FILES = $(wildcard $(SRC)/*.c)
@@ -79,10 +82,10 @@ MAN_SRC = $(wildcard $(MAN)/*.*)
 
 PO_FILES = $(filter-out $(MESSAGES),$(wildcard $(PO)/*.po))
 MO_FILES = $(PO_FILES:$(PO)/%.po=$(MO)/%.mo)
-LANGUAGES = $(PO_FILES:$(PO)/%.po=%)
-NLS_FILES = $(LANGUAGES:%=$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo)
+LANGUAGES ?= $(PO_FILES:$(PO)/%.po=%)
+NLS_FILES = $(LANGUAGES:%=$(DESTDIR)$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo)
 MAN_FILES = $(foreach FILE, $(MAN_SRC), \
-              $(MANDIR)/man$(subst .,,$(suffix $(FILE)))/$(FILE:$(MAN)/%=%))
+              $(DESTDIR)$(MANDIR)/man$(subst .,,$(suffix $(FILE)))/$(FILE:$(MAN)/%=%))
 
 FILES = $(SRC_FILES:$(SRC)/%.c=%)
 
@@ -91,10 +94,10 @@ DEPS = $(FILES:%=$(DEP)/%.d)
 
 all debug: $(BIN)/$(PACKAGE) $(MO_FILES)
 
-install: $(BINDIR)/$(PACKAGE) $(NLS_FILES) $(MAN_FILES)
+install: $(DESTDIR)$(BINDIR)/$(PACKAGE) $(NLS_FILES) $(MAN_FILES)
 
 uninstall:
-	$(RM) $(BINDIR)/$(PACKAGE) $(NLS_FILES) $(MAN_FILES)
+	$(RM) $(DESTDIR)$(BINDIR)/$(PACKAGE) $(NLS_FILES) $(MAN_FILES)
 
 messages: $(MESSAGES)
 
@@ -109,14 +112,14 @@ clean:
 	$(RM) $(LIB)/*.a
 	$(RM) $(filter-out $(BIN)/CVS,$(wildcard $(BIN)/*))
 
-$(BINDIR)/%: $(BIN)/%
+$(DESTDIR)$(BINDIR)/%: $(BIN)/%
 	install -D -m 755 $^ $@
 
-$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo: $(MO)/%.mo
-	mkdir -p $(LOCALEDIR)/$*/$(MESSDIR)
+$(DESTDIR)$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo: $(MO)/%.mo
+	mkdir -p $(DESTDIR)$(LOCALEDIR)/$*/$(MESSDIR)
 	install -D -m 644 $^ $@
 
-$(MANDIR)/%: $(MAN)/$(*F)
+$(DESTDIR)$(MANDIR)/%: $(MAN)/$(*F)
 	install -D -m 644 $(MAN)/$(*F) $@
 
 $(BIN)/%: $(OBJS) 
