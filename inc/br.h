@@ -28,6 +28,14 @@ int is_95b_mbr(FILE *fp);
    FALSE.The file position will change when this function is called! */
 int is_2000_mbr(FILE *fp);
 
+/* returns TRUE if the file has a Microsoft Vista master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_vista_mbr(FILE *fp);
+
+/* returns TRUE if the file has a Microsoft 7 master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_win7_mbr(FILE *fp);
+
 /* returns TRUE if the file has a syslinux master boot record, otherwise
    FALSE.The file position will change when this function is called! */
 int is_syslinux_mbr(FILE *fp);
@@ -47,6 +55,14 @@ int write_95b_mbr(FILE *fp);
 /* Writes a 2000 master boot record to a file, returns TRUE on success, otherwise
    FALSE */
 int write_2000_mbr(FILE *fp);
+
+/* Writes a Vista master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_vista_mbr(FILE *fp);
+
+/* Writes a 7 master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_win7_mbr(FILE *fp);
 
 /* Writes a syslinux master boot record to a file, returns TRUE on success, otherwise
    FALSE */

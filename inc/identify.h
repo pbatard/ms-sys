@@ -12,11 +12,13 @@
 #define FAT32NT_BR 6
 #define MBR_95B    7
 #define MBR_2000   8
-#define MBR_SYSLINUX   9
-#define MBR_ZERO   10
-#define FAT16FD_BR 11
-#define FAT32FD_BR 12
-#define NUMBER_OF_RECORD_TYPES 	13
+#define MBR_VISTA  9
+#define MBR_WIN7   10
+#define MBR_SYSLINUX  11
+#define MBR_ZERO   12
+#define FAT16FD_BR 13
+#define FAT32FD_BR 14
+#define NUMBER_OF_RECORD_TYPES 	15
 
 /* Returns the number of sectors on disk before partition */
 unsigned long partition_start_sector(FILE *fp);

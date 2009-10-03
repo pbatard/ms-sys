@@ -1,3 +1,20 @@
+/******************************************************************
+    Copyright (C) 2009  Henrik Carlqvist
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+******************************************************************/
 #include <stdio.h>
 
 #include "file.h"
@@ -63,6 +80,26 @@ int is_2000_mbr(FILE *fp)
       contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
 } /* is_2000_mbr */
 
+int is_vista_mbr(FILE *fp)
+{
+   #include "mbr_vista.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      contains_data(fp, 0x0, mbr_vista_0x0, sizeof(mbr_vista_0x0)) &&
+      contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* is_vista_mbr */
+
+int is_win7_mbr(FILE *fp)
+{
+   #include "mbr_win7.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      contains_data(fp, 0x0, mbr_win7_0x0, sizeof(mbr_win7_0x0)) &&
+      contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* is_win7_mbr */
+
 int is_syslinux_mbr(FILE *fp)
 {
    #include "mbr_syslinux.h"
@@ -112,6 +149,26 @@ int write_2000_mbr(FILE *fp)
       write_data(fp, 0x0, mbr_2000_0x0, sizeof(mbr_2000_0x0)) &&
       write_data(fp, 0x1FE, aucRef, sizeof(aucRef));
 } /* write_2000_mbr */
+
+int write_vista_mbr(FILE *fp)
+{
+   #include "mbr_vista.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      write_data(fp, 0x0, mbr_vista_0x0, sizeof(mbr_vista_0x0)) &&
+      write_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* write_vista_mbr */
+
+int write_win7_mbr(FILE *fp)
+{
+   #include "mbr_win7.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      write_data(fp, 0x0, mbr_win7_0x0, sizeof(mbr_win7_0x0)) &&
+      write_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* write_win7_mbr */
 
 int write_syslinux_mbr(FILE *fp)
 {

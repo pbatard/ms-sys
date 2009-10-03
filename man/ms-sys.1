@@ -51,6 +51,18 @@ Write partition info (hidden sectors, heads and drive id) to boot
 record. This might be needed on some partitions depending on
 which program was used to create the file system.
 .TP
+.B \-7, \-\-mbr7
+Write a Windows 7 master boot record to device.
+Does not change Windows Disk Signature (bytes 01b8-01bd).
+This MBR will boot certain partition types beyond cylinder
+1024 using LBA addressing.
+.TP
+.B \-i, \-\-mbrvista
+Write a Windows Vista master boot record to device.
+Does not change Windows Disk Signature (bytes 01b8-01bd).
+This MBR will boot certain partition types beyond cylinder
+1024 using LBA addressing.
+.TP
 .B \-m, \-\-mbr
 Write a Windows 2000/XP/2003 master boot record to device.
 Does not change Windows Disk Signature (bytes 01b8-01bd).
@@ -181,6 +193,10 @@ to create the partition instead. Since version 1.1.3 ms-sys has the switch
 \-p which is supposed to fix this problem. Unfortunately, when using ms-sys
 with Linux kernel 2.6 nor the \-p switch or gnu parted might work. The only
 reliable workaround known so far is to use ms-sys with Linux kernel 2.4.
+.P
+There is not yet support for NTFS partition boot records in ms-sys. For Windows 7
+it has been reported that doing "sysprep" before making an image of an NTFS partition
+will make the partition restored from the image bootable.
 .SH AUTHOR
 This manual page was originally written by G\[:u]rkan Seng\[:u]n and since
 edited by Henrik Carlqvist. The program ms-sys is mostly written by

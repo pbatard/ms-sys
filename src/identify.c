@@ -1,3 +1,20 @@
+/******************************************************************
+    Copyright (C) 2009  Henrik Carlqvist
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+******************************************************************/
 #include <linux/hdreg.h>
 #include <linux/fd.h>
 /* Ugly fix for compability with both older libc and newer kernels */
@@ -122,6 +139,8 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
    int bIsPartition = is_partition(fp);
    switch(iBr)
    {
+      case MBR_WIN7:
+      case MBR_VISTA:
       case MBR_2000:
       case MBR_95B:
       case MBR_DOS:
@@ -356,6 +375,20 @@ void diagnose(FILE *fp, const char *szPath)
 	    _("it is a Microsoft 2000/XP/2003 master boot record, like the one this\n"));
 	 printf(
 	    _("program creates with the switch -m on a hard disk device.\n"));
+   }
+   else if(is_vista_mbr(fp))
+   {
+         printf(
+            _("it is a Microsoft Vista master boot record, like the one this\n"));
+         printf(
+            _("program creates with the switch -i on a hard disk device.\n"));
+   }
+   else if(is_win7_mbr(fp))
+   {
+         printf(
+            _("it is a Microsoft 7 master boot record, like the one this\n"));
+         printf(
+            _("program creates with the switch -7 on a hard disk device.\n"));
    }
    else if(is_syslinux_mbr(fp))
    {
