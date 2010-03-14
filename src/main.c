@@ -16,6 +16,7 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ******************************************************************/
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 
@@ -30,13 +31,14 @@
 #include "nls.h"
 #include "partition_info.h"
 
-#define VERSION "2.1.4"
+#define VERSION "2.1.5"
 
 void print_help(const char *szCommand);
 void print_version(void);
 int parse_switches(int argc, char **argv, int *piBr,
 		   int *pbForce, int *pbPrintVersion,
-		   int *pbKeepLabel, int *pbWritePartitionInfo);
+		   int *pbKeepLabel, int *pbWritePartitionInfo, int *piHeads);
+int isnumber(const char *szString);
 
 int main(int argc, char **argv)
 {
@@ -46,11 +48,12 @@ int main(int argc, char **argv)
    int bPrintVersion = 0;
    int bKeepLabel = 1;
    int bWritePartitionInfo = 0;
+   int iHeads = -1;
    int iRet = 0;
 
    nls_init();
    if(parse_switches(argc, argv, &iBr, &bForce, &bPrintVersion,
-		     &bKeepLabel, &bWritePartitionInfo))
+		     &bKeepLabel, &bWritePartitionInfo, &iHeads))
    {
       print_help(argv[0]);
       return 0;
@@ -86,15 +89,17 @@ int main(int argc, char **argv)
    {
       if( write_partition_start_sector_number(fp) )
       {
-	 printf(_("Start sector (nr of hidden sectors) successfully written to %s\n"),
+	 printf(_("Start sector %ld (nr of hidden sectors) successfully written to %s\n"),
+		partition_start_sector(fp),
 		argv[argc-1]);
 	 if( write_partition_physical_disk_drive_id(fp) )
 	 {
 	    printf(_("Physical disk drive id 0x80 (C:) successfully written to %s\n"),
 		   argv[argc-1]);
-	    if( write_partition_number_of_heads(fp) )
+	    if( write_partition_number_of_heads(fp, iHeads))
 	    {
-	       printf(_("Number of heads successfully written to %s\n"),
+	       printf(_("Number of heads (%d) successfully written to %s\n"),
+		      iHeads != -1 ? iHeads : partition_number_of_heads(fp),
 		      argv[argc-1]);
 	    }
 	    else
@@ -328,6 +333,8 @@ void print_help(const char *szCommand)
    printf(
       _("                    to boot record\n"));
    printf(
+      _("    -H, --heads <n> Manually set number of heads if partition info is written\n"));
+   printf(
       _("    -7, --mbr7      Write a Windows 7 MBR to device\n"));
    printf(
       _("    -i, --mbrvista  Write a Windows Vista MBR to device\n"));
@@ -367,7 +374,8 @@ void print_version(void)
 
 int parse_switches(int argc, char **argv, int *piBr,
 		   int *pbForce, int *pbPrintVersion,
-		   int *pbKeepLabel, int *pbWritePartitionInfo)
+		   int *pbKeepLabel, int *pbWritePartitionInfo,
+		   int *piHeads)
 {
    int bHelp = 0;
    int i;
@@ -377,6 +385,8 @@ int parse_switches(int argc, char **argv, int *piBr,
    *pbPrintVersion = 0;
    *pbKeepLabel = 1;
    *pbWritePartitionInfo = 0;
+   *piHeads = -1;
+   
    
    if(argc < 2)
       return 1;
@@ -427,7 +437,7 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 *piBr = AUTO_BR;
       else if( ! strcmp("--version", argv[argc]))
 	 *pbPrintVersion = 1;
-      else if( (argv[argc][0] == '-') && (argv[argc][1] != '-') )
+      else if( (argv[argc][0] == '-') && (argv[argc][1] != '-') && !argv[argc][2])
       {
 	 for(i=1; argv[argc][i]; i++)
 	 {
@@ -493,9 +503,23 @@ int parse_switches(int argc, char **argv, int *piBr,
 	    }
 	 }
       }
+      else if((!strcmp("--heads", argv[argc-1]) || !strcmp("-H", argv[argc-1])) &&
+	      isnumber(argv[argc]))
+	 *piHeads = atoi(argv[argc--]);
       else
 	 bHelp = 1;
    }
    return bHelp;
 } /* parse_switches */
 
+int isnumber(const char *szString)
+{
+   int bRet = (szString && *szString);
+   while(bRet && *szString)
+   {
+      if((*szString < '0') || (*szString > '9'))
+	 bRet = 0;
+      szString++;
+   }
+   return bRet;
+} /* isnumber */

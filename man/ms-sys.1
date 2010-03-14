@@ -51,6 +51,9 @@ Write partition info (hidden sectors, heads and drive id) to boot
 record. This might be needed on some partitions depending on
 which program was used to create the file system.
 .TP
+.B \-H <n>, \-\-heads <n>
+Set number of heads written with -p switch.
+.TP
 .B \-7, \-\-mbr7
 Write a Windows 7 master boot record to device.
 Does not change Windows Disk Signature (bytes 01b8-01bd).
@@ -191,8 +194,10 @@ There have been reports about unbootable FAT32 partitions created with
 formatted with mkdosfs and mkfs.vfat. One workaround is to use gnu parted
 to create the partition instead. Since version 1.1.3 ms-sys has the switch
 \-p which is supposed to fix this problem. Unfortunately, when using ms-sys
-with Linux kernel 2.6 nor the \-p switch or gnu parted might work. The only
-reliable workaround known so far is to use ms-sys with Linux kernel 2.4.
+with Linux kernel 2.6 nor the \-p switch or gnu parted might work. A simple
+workaround is to use ms-sys with Linux kernel 2.4. Another possible workaround
+is to manually set the number of heads with the switch -H. If the system has
+been booted by LILO, the correct number of heads can be given by "lilo -T geom".
 .P
 There is not yet support for NTFS partition boot records in ms-sys. For Windows 7
 it has been reported that doing "sysprep" before making an image of an NTFS partition

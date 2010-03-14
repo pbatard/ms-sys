@@ -21,10 +21,10 @@
 #include "identify.h"
 #include "partition_info.h"
 
-int write_partition_number_of_heads(FILE *fp)
+int write_partition_number_of_heads(FILE *fp, int iHeads)
 {
    unsigned char aucBuf[2];
-   unsigned short s = partition_number_of_heads(fp);
+   unsigned short s = iHeads < 0 ? partition_number_of_heads(fp) : iHeads;
 
    if(!s)
       return 0;

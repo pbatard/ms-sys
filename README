@@ -116,16 +116,15 @@ partition instead. Since version 1.1.3 ms-sys has the switch -p which
 is supposed to fix this problem. The problem has also been reported on
 partitions formatted with mkdosfs and mkfs.vfat.
 
-Unfortunately, there have also been some reports that the switch -p does not
-always fix the problem above. That problem might be fixed since version 2.1.1.
-I need success-stories or new problem reports to verify that version 2.1.1
-really fixes the problem.
-
 There have been yet another problem reported about the -p switch and gnu
 parted together with Linux kernel 2.6. The problem is that kernel 2.6 might
 report a geometry incompatible with other operating systems. There is a
 detailed description of the problem at
 http://groups-beta.google.com/group/linux.kernel/msg/404d8683ce302cf2
+As a workaround for this ms-sys now has the switch -H to manually set the
+number of heads. The next problem is to find out what value for number of
+heads to give. If the system was booted by LILO this can be shown by
+"lilo -T geom".
 
 There have been reports about problems when compiling against uClibc. More
 problem reports or suggestions of fixes are welcome!
