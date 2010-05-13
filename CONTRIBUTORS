@@ -13,3 +13,4 @@ Søren Holm			helped debugging BPB problem with -p switch
 Till Wimmer                     contributed FreeDOS FAT16 & FAT32 boot records
 Alon Bar-Lev                    patched Makefile to support DESTDIR
 Rene Arends                     added support for Win7 and Vista MBRs
+Peter Daum			patch for manually setting nr of heads in BPB

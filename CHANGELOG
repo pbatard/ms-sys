@@ -1,6 +1,11 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
-14/3  2010 2.1.5    Added support for manually setting the number of heads in BPB
+13/5  2010 2.2.0    Added support for large disk image files. This version
+                    is now considered stable as the BPB problem has had a
+                    workaround since version 2.1.5.
+
+14/3  2010 2.1.5    Added support for manually setting the number of heads
+                    in BPB
 
 3/10  2009 2.1.4    Win 7 and Vista MBR added
                     Added copyright notice to source files
