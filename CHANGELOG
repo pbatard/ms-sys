@@ -1,5 +1,8 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+22/1  2011 2.2.1    Modified Makefile to recreate directories lost by CVS
+                    Now also doing a sanity check before only writing BPB
+
 13/5  2010 2.2.0    Added support for large disk image files. This version
                     is now considered stable as the BPB problem has had a
                     workaround since version 2.1.5.

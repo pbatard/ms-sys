@@ -122,19 +122,21 @@ $(DESTDIR)$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo: $(MO)/%.mo
 $(DESTDIR)$(MANDIR)/%: $(MAN)/$(*F)
 	install -D -m 644 $(MAN)/$(*F) $@
 
-$(BIN)/%: $(OBJS) 
+$(BIN)/%: $(OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(MESSAGES): $(SRC_FILES) $(INC_FILES)
 	xgettext -k_ -o$@ $^
 
-$(OBJS): $(OBJ)/%.o: $(SRC)/%.c $(DEP)/%.d
+$(OBJS): $(OBJ)/%.o: $(SRC)/%.c $(DEP)/%.d \
+                      $(filter-out $(wildcard $(OBJ)), $(OBJ)) \
+                      $(filter-out $(wildcard $(BIN)), $(BIN))
 	$(CC) $(CFLAGS) -o $@ $<
 
-$(MO_FILES): $(MO)/%.mo: $(PO)/%.po
+$(MO_FILES): $(MO)/%.mo: $(PO)/%.po $(filter-out $(wildcard $(MO)), $(MO))
 	msgfmt -o $@ $<
 
-$(DEPS): $(DEP)/%.d: $(SRC)/%.c
+$(DEPS): $(DEP)/%.d: $(SRC)/%.c $(filter-out $(wildcard $(DEP)), $(DEP))
 ifeq ($(MAKECMDGOALS),quiet)
 	@$(CC) -MM $(CFLAGS) -MT $@ $< > $@
 else
@@ -146,6 +148,10 @@ ifneq ($(wildcard $(DEPS)),)
 include $(wildcard $(DEPS))
 endif
 endif
+
+# Create directories which might be lost from CVS
+$(DEP) $(OBJ) $(BIN) $(MO):
+	mkdir -p $@
 
 # Used to force some rules to always be compiled
 FORCE: ;
