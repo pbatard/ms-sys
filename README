@@ -128,3 +128,6 @@ heads to give. If the system was booted by LILO this can be shown by
 
 There have been reports about problems when compiling against uClibc. More
 problem reports or suggestions of fixes are welcome!
+
+Writing Windows 7 NTFS boot records with ms-sys is probably not useful if
+the intention is to get a bootable partition.

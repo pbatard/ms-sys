@@ -2,7 +2,7 @@
 #define FILE_H
 
 /* Max valid value of uiLen for contains_data */
-#define MAX_DATA_LEN 2048
+#define MAX_DATA_LEN 10240
 
 /* Checks if a file contains a data pattern of length uiLen at position
    ulPositoin. The file pointer will change when calling this function! */

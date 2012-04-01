@@ -18,7 +18,8 @@
 #define MBR_ZERO   12
 #define FAT16FD_BR 13
 #define FAT32FD_BR 14
-#define NUMBER_OF_RECORD_TYPES 	15
+#define NTFS_BR    15
+#define NUMBER_OF_RECORD_TYPES 	16
 
 /* Returns the number of sectors on disk before partition */
 unsigned long partition_start_sector(FILE *fp);

@@ -32,6 +32,7 @@
 #include "fat32.h"
 #include "fat32nt.h"
 #include "fat32fd.h"
+#include "ntfs.h"
 #include "nls.h"
 #include "identify.h"
 
@@ -260,6 +261,32 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
 	 }
       }
       break;
+      case NTFS_BR:
+      {
+	 if( ! bIsPartition )
+	 {
+	    if(bPrintMessages)
+	    {
+	       printf(_("%s does not seem to be a disk partition device,\n"),
+		      szPath);
+	       printf(
+		  _("use the switch -f to force writing of a NTFS boot record\n"));
+	    }
+	    return 0;
+	 }
+	 if( ! is_ntfs_fs(fp))
+	 {
+	    if(bPrintMessages)
+	    {
+	       printf(_("%s does not seem to have a NTFS file system,\n"),
+		      szPath);
+	       printf(
+		  _("use the switch -f to force writing of a NTFS boot record\n"));
+	    }
+	    return 0;
+	 }	 
+      }
+      break;
       default:
       {
 	 if(bPrintMessages)
@@ -281,6 +308,8 @@ void diagnose(FILE *fp, const char *szPath)
       printf(_("%s has a FAT16 file system.\n"), szPath);
    if(is_fat_32_fs(fp))
       printf(_("%s has a FAT32 file system.\n"), szPath);
+   if(is_ntfs_fs(fp))
+      printf(_("%s has a NTFS file system.\n"), szPath);
    if(is_br(fp))
       printf(_("%s has an x86 boot sector,\n"), szPath);
    else
@@ -288,7 +317,14 @@ void diagnose(FILE *fp, const char *szPath)
       printf(_("%s has no x86 boot sector\n"), szPath);
       return;
    }
-   if(entire_fat_12_br_matches(fp))
+   if(entire_ntfs_br_matches(fp))
+   {
+      printf(
+	 _("it is exactly the kind of NTFS boot record this program\n"));
+      printf(
+	 _("would create with the switch -n on a NTFS partition.\n"));      
+   }
+   else if(entire_fat_12_br_matches(fp))
    {
       printf(
 	 _("it is exactly the kind of FAT12 boot record this program\n"));

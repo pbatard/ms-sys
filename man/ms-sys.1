@@ -43,6 +43,11 @@ Write a FAT16 partition FreeDOS boot record to device.
 .B \-6, \-\-fat16
 Write a FAT16 partition DOS (Win9x) boot record to device.
 .TP
+.B \-n, \-\-ntfs
+Write a NTFS partition Windows 7 boot record to device. This
+functionality should be considered experimental and probably
+is of no practical use.
+.TP
 .B \-l, \-\-wipelabel
 Reset partition disk label in boot record.
 .TP
@@ -199,13 +204,13 @@ workaround is to use ms-sys with Linux kernel 2.4. Another possible workaround
 is to manually set the number of heads with the switch -H. If the system has
 been booted by LILO, the correct number of heads can be given by "lilo -T geom".
 .P
-There is not yet support for NTFS partition boot records in ms-sys. For Windows 7
-it has been reported that doing "sysprep" before making an image of an NTFS partition
-will make the partition restored from the image bootable.
+The writing of NTFS partition boot records in ms-sys probably has no practical use.
+For Windows 7 it has been reported that doing "sysprep" before making an image of
+an NTFS partition will make the partition restored from the image bootable.
 .SH AUTHOR
 This manual page was originally written by G\[:u]rkan Seng\[:u]n and since
 edited by Henrik Carlqvist. The program ms-sys is mostly written by
 Henrik Carlqvist, the file CONTRIBUTORS in the source archive contains a
 complete list of contributors.
 .SH SEE ALSO
-mformat(1)  fdformat(8)  mkdosfs(8)  mkisofs(8)
+mformat(1)  fdformat(8)  mkdosfs(8)  mkisofs(8)  parted(8)

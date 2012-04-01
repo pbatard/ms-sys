@@ -1,5 +1,10 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+ 1/4  2012 2.3.0    Added experimental support for NTFS boot record. This
+                    functionality is mostly useful to identify Windows 7 NTFS
+                    boot records. Writing an NTFS Windows 7 boot record will
+                    most likely not be of much use.
+
 22/1  2011 2.2.1    Modified Makefile to recreate directories lost by CVS
                     Now also doing a sanity check before only writing BPB
 

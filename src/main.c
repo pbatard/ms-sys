@@ -26,12 +26,13 @@
 #include "fat32.h"
 #include "fat32fd.h"
 #include "fat32nt.h"
+#include "ntfs.h"
 #include "br.h"
 #include "identify.h"
 #include "nls.h"
 #include "partition_info.h"
 
-#define VERSION "2.2.1"
+#define VERSION "2.3.0"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -309,6 +310,19 @@ int main(int argc, char **argv)
 	 }	    
       }
       break;
+      case NTFS_BR:
+      {
+	 if(write_ntfs_br(fp))
+	    printf(_("NTFS Windows 7 boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing NTFS Windows 7 boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }	    
+      }
+      break;
       default:
       {
 	 printf(_("Whoops, internal error, unknown boot record\n"));
@@ -334,6 +348,8 @@ void print_help(const char *szCommand)
      _("    -5, --fat16free Write a FAT16 partition FreeDOS boot record to device\n"));
    printf(
      _("    -6, --fat16     Write a FAT16 partition DOS boot record to device\n"));
+   printf(
+     _("    -n, --ntfs      Write a NTFS partition Windows 7 boot record to device\n"));
    printf(
       _("    -l, --wipelabel Reset partition disk label in boot record\n"));
    printf(
@@ -421,6 +437,8 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 *piBr = FAT16FD_BR;
       else if( ! strcmp("--fat16", argv[argc]))
 	 *piBr = FAT16_BR;
+      else if( ! strcmp("--ntfs", argv[argc]))
+	 *piBr = NTFS_BR;
       else if( ! strcmp("--force", argv[argc]))
 	 *pbForce = 1;
       else if( ! strcmp("--wipelabel", argv[argc]))
@@ -468,6 +486,9 @@ int parse_switches(int argc, char **argv, int *piBr,
 		  break;
 	       case '6':
 		  *piBr = FAT16_BR;
+		  break;
+	       case 'n':
+		  *piBr = NTFS_BR;
 		  break;
 	       case 'f':
 		  *pbForce = 1;
