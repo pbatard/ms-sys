@@ -32,7 +32,7 @@
 #include "nls.h"
 #include "partition_info.h"
 
-#define VERSION "2.3.0"
+#define VERSION "2.4.0"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -209,11 +209,24 @@ int main(int argc, char **argv)
       case MBR_SYSLINUX:
       {
 	 if(write_syslinux_mbr(fp))
-	    printf(_("Public domain syslinux master boot record successfully written to %s\n"),
+	    printf(_("Syslinux master boot record successfully written to %s\n"),
 		   argv[argc-1]);
 	 else
 	 {
-	    printf(_("Failed writing public domain syslinux master boot record to %s\n"),
+	    printf(_("Failed writing syslinux master boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }	    
+      }
+      break;
+      case MBR_GPT_SYSLINUX:
+      {
+	 if(write_syslinux_gpt_mbr(fp))
+	    printf(_("Syslinux GPT master boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing syslinux GPT master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
 	 }	    
@@ -369,7 +382,9 @@ void print_help(const char *szCommand)
    printf(
       _("    -d, --mbrdos    Write a DOS/Windows NT MBR to device\n"));
    printf(
-      _("    -s, --mbrsyslinux    Write a public domain syslinux MBR to device\n"));
+      _("    -s, --mbrsyslinux    Write a syslinux MBR to device\n"));
+   printf(
+      _("    -t, --mbrgptsyslinux Write a syslinux GPT MBR to device\n"));
    printf(
       _("    -z, --mbrzero   Write an empty (zeroed) MBR to device\n"));
    printf(
@@ -457,6 +472,8 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 *piBr = MBR_DOS;
       else if( ! strcmp("--mbrsyslinux", argv[argc]))
 	 *piBr = MBR_SYSLINUX;
+      else if( ! strcmp("--mbrgptsyslinux", argv[argc]))
+	 *piBr = MBR_GPT_SYSLINUX;
       else if( ! strcmp("--mbrzero", argv[argc]))
 	 *piBr = MBR_ZERO;
       else if( ! strcmp("--write", argv[argc]))
@@ -516,6 +533,9 @@ int parse_switches(int argc, char **argv, int *piBr,
 		  break;
 	       case 's':
 		  *piBr = MBR_SYSLINUX;
+		  break;
+	       case 't':
+		  *piBr = MBR_GPT_SYSLINUX;
 		  break;
 	       case 'z':
 		  *piBr = MBR_ZERO;

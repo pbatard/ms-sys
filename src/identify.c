@@ -146,6 +146,7 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       case MBR_95B:
       case MBR_DOS:
       case MBR_SYSLINUX:
+      case MBR_GPT_SYSLINUX:
       case MBR_ZERO:
       {
 	 if( ! bIsDiskDevice )
@@ -432,6 +433,13 @@ void diagnose(FILE *fp, const char *szPath)
 	    _("it is a public domain syslinux master boot record, like the one this\n"));
 	 printf(
 	    _("program creates with the switch -s on a hard disk device.\n"));
+   }
+   else if(is_syslinux_gpt_mbr(fp))
+   {
+	 printf(
+	    _("it is a GPL syslinux GPT master boot record, like the one this\n"));
+	 printf(
+	    _("program creates with the switch -t on a hard disk device.\n"));
    }
    else if(is_zero_mbr(fp))
    {

@@ -15,3 +15,4 @@ Alon Bar-Lev                    patched Makefile to support DESTDIR
 Rene Arends                     added support for Win7 and Vista MBRs
 Peter Daum			patch for manually setting nr of heads in BPB
 Pete Batard                     added NTFS Win7 experimental support
+Sven Köhler                     tested syslinux GPT MBR, updated syslinux MBR to 6.02

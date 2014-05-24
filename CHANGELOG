@@ -1,5 +1,8 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+24/5  2014 2.4.0    Added support for syslinux GPT MBR.
+                    Updated syslinux mbr to version 6.02.
+
  1/4  2012 2.3.0    Added experimental support for NTFS boot record. This
                     functionality is mostly useful to identify Windows 7 NTFS
                     boot records. Writing an NTFS Windows 7 boot record will

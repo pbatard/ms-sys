@@ -91,10 +91,14 @@ This MBR will not boot beyond cylinder 1024 as it does not support
 LBA addressing.
 .TP
 .B \-s, \-\-mbrsyslinux
-Write a public domain syslinux master boot record to device.
+Write a syslinux master boot record to device.
 Does not change Windows Disk Signature (bytes 01b8-01bd).
 This MBR will boot any partition types beyond cylinder 
 1024 using LBA addressing.
+.TP
+.B \-t, \-\-mbrgptsyslinux
+Write a GPL syslinux GPT MBR to device.
+This MBR will boot from a GPT partition table.
 .TP
 .B \-z, \-\-mbrzero
 Write an empty (zeroed, non-bootable) master boot record to device.

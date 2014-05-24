@@ -110,6 +110,17 @@ int is_syslinux_mbr(FILE *fp)
       contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
 } /* is_syslinux_mbr */
 
+int is_syslinux_gpt_mbr(FILE *fp)
+{
+   #include "mbr_gpt_syslinux.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      contains_data(fp, 0x0, mbr_gpt_syslinux_0x0,
+		    sizeof(mbr_gpt_syslinux_0x0)) &&
+      contains_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* is_syslinux_gpt_mbr */
+
 int is_zero_mbr(FILE *fp)
 {
    #include "mbr_zero.h"
@@ -179,6 +190,16 @@ int write_syslinux_mbr(FILE *fp)
       write_data(fp, 0x0, mbr_syslinux_0x0, sizeof(mbr_syslinux_0x0)) &&
       write_data(fp, 0x1FE, aucRef, sizeof(aucRef));
 } /* write_syslinux_mbr */
+
+int write_syslinux_gpt_mbr(FILE *fp)
+{
+   #include "mbr_gpt_syslinux.h"
+   unsigned char aucRef[] = {0x55, 0xAA};
+
+   return
+      write_data(fp, 0x0, mbr_gpt_syslinux_0x0, sizeof(mbr_gpt_syslinux_0x0)) &&
+      write_data(fp, 0x1FE, aucRef, sizeof(aucRef));
+} /* write_syslinux_gpt_mbr */
 
 int write_zero_mbr(FILE *fp)
 {
