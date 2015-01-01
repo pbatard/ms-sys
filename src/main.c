@@ -26,13 +26,14 @@
 #include "fat32.h"
 #include "fat32fd.h"
 #include "fat32nt.h"
+#include "fat32pe.h"
 #include "ntfs.h"
 #include "br.h"
 #include "identify.h"
 #include "nls.h"
 #include "partition_info.h"
 
-#define VERSION "2.4.0"
+#define VERSION "2.4.1"
 
 void print_help(const char *szCommand);
 void print_version(void);
@@ -297,6 +298,19 @@ int main(int argc, char **argv)
 	 }	    
       }
       break;
+      case FAT32PE_BR:
+      {
+	 if(write_fat_32_pe_br(fp, bKeepLabel))
+	    printf(_("FAT32 PE boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing FAT32 PE boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }	    
+      }
+      break;
       case FAT32FD_BR:
       {
 	 if(write_fat_32_fd_br(fp, bKeepLabel))
@@ -354,6 +368,8 @@ void print_help(const char *szCommand)
    printf(
      _("    -2, --fat32nt   Write a FAT32 partition NT boot record to device\n"));
    printf(
+     _("    -e, --fat32pe   Write a FAT32 partition PE boot record to device\n"));
+   printf(
      _("    -3, --fat32     Write a FAT32 partition DOS boot record to device\n"));
    printf(
      _("    -4, --fat32free Write a FAT32 partition FreeDOS boot record to device\n"));
@@ -405,8 +421,8 @@ _("    -w, --write     Write automatically selected boot record to device\n\n"))
 void print_version(void)
 {
    printf(_("ms-sys version %s\n"), VERSION);
-   printf(_("Written by Henrik Carlqvist (henca@users.SourceForge.net)\n\n"));
-   printf(_("Copyright (C) 2009 Free Software Foundation, Inc.\n"));
+   printf(_("Written by Henrik Carlqvist\n\n"));
+   printf(_("Copyright (C) 2009-2015 Free Software Foundation, Inc.\n"));
    printf(_("This is free software; see the source for copying conditions.  There is NO\n"));
    printf(_("warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"));
 } /* print_version */
@@ -444,6 +460,8 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 *piBr = FAT12_BR;
       else if( ! strcmp("--fat32nt", argv[argc]))
 	 *piBr = FAT32NT_BR;
+      else if( ! strcmp("--fat32pe", argv[argc]))
+	 *piBr = FAT32PE_BR;
       else if( ! strcmp("--fat32", argv[argc]))
 	 *piBr = FAT32_BR;
       else if( ! strcmp("--fat32free", argv[argc]))
@@ -491,6 +509,9 @@ int parse_switches(int argc, char **argv, int *piBr,
 		  break;
 	       case '2':
 		  *piBr = FAT32NT_BR;
+		  break;
+	       case 'e':
+		  *piBr = FAT32PE_BR;
 		  break;
 	       case '3':
 		  *piBr = FAT32_BR;

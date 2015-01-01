@@ -31,6 +31,7 @@
 #include "fat16fd.h"
 #include "fat32.h"
 #include "fat32nt.h"
+#include "fat32pe.h"
 #include "fat32fd.h"
 #include "ntfs.h"
 #include "nls.h"
@@ -236,6 +237,7 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       break;
       case FAT32_BR:
       case FAT32NT_BR:
+      case FAT32PE_BR:
       case FAT32FD_BR:
       {
 	 if( ! bIsPartition )
@@ -362,6 +364,13 @@ void diagnose(FILE *fp, const char *szPath)
 	 printf(
 	    _("would create with the switch -2 on a FAT32 partition.\n"));
       }
+      else if(entire_fat_32_pe_br_matches(fp))
+      {
+	 printf(
+	   _("it is exactly the kind of FAT32 NT boot record this program\n"));
+	 printf(
+	    _("would create with the switch -e on a FAT32 partition.\n"));
+      }
       else if(entire_fat_32_fd_br_matches(fp))
       {
 	 printf(
@@ -375,7 +384,7 @@ void diagnose(FILE *fp, const char *szPath)
 	    _("it seems to be a FAT16 or FAT32 boot record, but it\n"));
 	 printf(
 	    _("differs from what this program would create with the\n"));
-	 printf(_("switch -6, -2 or -3 on a FAT16 or FAT32 partition.\n"));
+	 printf(_("switch -6, -2, -e or -3 on a FAT16 or FAT32 partition.\n"));
       }
    } 
    else if(is_lilo_br(fp))

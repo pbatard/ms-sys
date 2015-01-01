@@ -1,5 +1,7 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+ 1/1  2015 2.4.1    Added support for FAT32 PE boot record.
+
 24/5  2014 2.4.0    Added support for syslinux GPT MBR.
                     Updated syslinux mbr to version 6.02.
 
