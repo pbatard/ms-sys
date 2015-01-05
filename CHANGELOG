@@ -1,5 +1,7 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+ 5/1  2015 2.5.0    Added support to run on FreeBSD.
+
  1/1  2015 2.4.1    Added support for FAT32 PE boot record.
 
 24/5  2014 2.4.0    Added support for syslinux GPT MBR.

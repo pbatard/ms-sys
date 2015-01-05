@@ -15,15 +15,23 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ******************************************************************/
+#ifdef __linux__
 #include <linux/hdreg.h>
 #include <linux/fd.h>
+#endif
 /* Ugly fix for compability with both older libc and newer kernels */
 #include <sys/mount.h>
+#ifdef __linux__
 #ifndef BLKGETSIZE
 #include <linux/fs.h>
 #endif
+#endif
 /* end of ugly fix */
 #include <sys/ioctl.h>
+
+#ifdef __FreeBSD__
+#include <sys/disk.h>
+#endif
 
 #include "br.h"
 #include "fat12.h"
@@ -39,7 +47,9 @@
 
 /* This one should be in stdio.h, however it seems to be missing. Declared here
    to avoid warnings... */
+#ifndef fileno
 int fileno( FILE *stream);
+#endif
 
 
 /* Returns TRUE if file is a device, otherwise FALSE */
@@ -56,14 +66,23 @@ static int is_disk_device(FILE *fp)
    int iRes1;
    int iRes2;
    long lSectors;
-   struct hd_geometry sGeometry;
    int iFd = fileno(fp);
-   
+
+#ifdef BLKGETSIZE
+   struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
 #ifdef HDIO_REQ
    iRes2 = ioctl(iFd, HDIO_REQ, &sGeometry);
 #else
    iRes2 = ioctl(iFd, HDIO_GETGEO, &sGeometry);
+#endif
+#endif
+
+#ifdef DIOCGFWSECTORS
+   uint start_sector = 0;
+   iRes1 = ioctl(iFd, DIOCGFWSECTORS, &start_sector);
+   iRes2 = 0;
+   lSectors = 0;
 #endif
 
    return ! (iRes1 && iRes2);
@@ -71,9 +90,21 @@ static int is_disk_device(FILE *fp)
 
 static int is_floppy(FILE *fp)
 {
+#ifdef FDGETPRM
    struct floppy_struct sFloppy;
    
    return ! ioctl(fileno(fp) ,FDGETPRM, &sFloppy);
+#endif
+
+#ifdef DIOCGFWHEADS
+   int iFd = fileno(fp);
+   unsigned heads;
+   int iRes1 = ioctl(iFd, DIOCGFWHEADS, &heads);
+   if (! iRes1 )
+      return heads == 2;
+   else
+      return 0;
+#endif
 } /* is_floppy */
 
 static int is_partition(FILE *fp)
@@ -81,9 +112,10 @@ static int is_partition(FILE *fp)
    int iRes1;
    int iRes2;
    long lSectors;
-   struct hd_geometry sGeometry;
    int iFd = fileno(fp);
    
+#ifdef BLKGETSIZE
+   struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
 #ifdef HDIO_REQ
    iRes2 = ioctl(iFd, HDIO_REQ, &sGeometry);
@@ -92,6 +124,17 @@ static int is_partition(FILE *fp)
 #endif
 
    return (! (iRes1 && iRes2)) && (sGeometry.start);
+#endif
+
+#ifdef DIOCGMEDIASIZE
+   off_t bytes;
+   unsigned int start_sector;
+   iRes1 = ioctl(iFd, DIOCGMEDIASIZE, &bytes);
+   iRes2 = ioctl(iFd, DIOCGFWSECTORS, &start_sector);
+   lSectors = 0;
+
+   return (! (iRes1 && iRes2));
+#endif
 } /* is_partition */
 
 unsigned long partition_start_sector(FILE *fp)
@@ -99,9 +142,10 @@ unsigned long partition_start_sector(FILE *fp)
    int iRes1;
    int iRes2;
    long lSectors;
-   struct hd_geometry sGeometry;
    int iFd = fileno(fp);
-   
+
+#ifdef BLKGETSIZE
+   struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
 #ifdef HDIO_REQ
    iRes2 = ioctl(iFd, HDIO_REQ, &sGeometry);
@@ -112,6 +156,19 @@ unsigned long partition_start_sector(FILE *fp)
       return sGeometry.start;
    else
       return 0L;
+#endif
+
+#ifdef DIOCGFWSECTORS
+   uint start_sector = 0;
+   iRes1 = ioctl(iFd, DIOCGFWSECTORS, &start_sector);
+   iRes2 = 0;
+   lSectors = 0;
+   
+   if( ! iRes1 )
+      return start_sector;
+   else
+      return 0L;
+#endif
 } /* partition_start_sector */
 
 unsigned short partition_number_of_heads(FILE *fp)
@@ -119,9 +176,10 @@ unsigned short partition_number_of_heads(FILE *fp)
    int iRes1;
    int iRes2;
    long lSectors;
-   struct hd_geometry sGeometry;
    int iFd = fileno(fp);
    
+#ifdef BLKGETSIZE
+   struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
 #ifdef HDIO_REQ
    iRes2 = ioctl(iFd, HDIO_REQ, &sGeometry);
@@ -132,6 +190,19 @@ unsigned short partition_number_of_heads(FILE *fp)
       return (unsigned short) sGeometry.heads;
    else
       return 0;
+#endif
+
+#ifdef DIOCGFWHEADS
+   unsigned heads;
+   iRes1 = ioctl(iFd, DIOCGFWHEADS, &heads);
+   iRes2 = 0;
+   lSectors = 0;
+
+   if (! iRes1 )
+      return (unsigned short) heads;
+   else
+      return 0;
+#endif
 } /* partition_number_of_heads */
 
 int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
