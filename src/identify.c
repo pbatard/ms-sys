@@ -20,6 +20,9 @@
 #include <linux/fd.h>
 #endif
 /* Ugly fix for compability with both older libc and newer kernels */
+#ifdef __OpenBSD__
+#include <sys/types.h>
+#endif
 #include <sys/mount.h>
 #ifdef __linux__
 #ifndef BLKGETSIZE
@@ -29,7 +32,7 @@
 /* end of ugly fix */
 #include <sys/ioctl.h>
 
-#ifdef __FreeBSD__
+#if defined(HAVE_SYS_DISK_H)
 #include <sys/disk.h>
 #endif
 

@@ -1,5 +1,8 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+26/9  2015 2.5.1    Added support to run on OpenBSD,
+                    added german translation.
+
  5/1  2015 2.5.0    Added support to run on FreeBSD.
 
  1/1  2015 2.4.1    Added support for FAT32 PE boot record.

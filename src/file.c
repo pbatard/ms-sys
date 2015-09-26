@@ -22,7 +22,7 @@
 #include "file.h"
 
 #include <unistd.h>
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
 #include <sys/sysctl.h>
 #endif
 
@@ -34,7 +34,7 @@ int contains_data(FILE *fp, unsigned long ulPosition,
    unsigned long start_read = ulPosition;
    unsigned long to_read = uiLen;
 
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
    /* cannot read/write directly from/to disk at random offsets */
    /* must read/write from/to pagesize boundaries */
 
@@ -70,7 +70,7 @@ int write_data(FILE *fp, unsigned long ulPosition,
    unsigned long start_write = ulPosition;
    unsigned long to_write = uiLen;
 
-#ifdef __FreeBSD__
+#if defined (__FreeBSD__) || defined(__OpenBSD__)
    /* cannot read/write directly from/to disk at random offsets */
    /* must read/write from/to pagesize boundaries */
    unsigned long pagesize = sysconf(_SC_PAGE_SIZE);
