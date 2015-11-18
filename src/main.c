@@ -1,5 +1,5 @@
 /******************************************************************
-    Copyright (C) 2009  Henrik Carlqvist
+    Copyright (C) 2009-2015 Henrik Carlqvist
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,11 +22,7 @@
 
 #include "fat12.h"
 #include "fat16.h"
-#include "fat16fd.h"
 #include "fat32.h"
-#include "fat32fd.h"
-#include "fat32nt.h"
-#include "fat32pe.h"
 #include "ntfs.h"
 #include "br.h"
 #include "identify.h"
@@ -102,7 +98,7 @@ int main(int argc, char **argv)
 	 printf(_("Start sector %ld (nr of hidden sectors) successfully written to %s\n"),
 		partition_start_sector(fp),
 		argv[argc-1]);
-	 if( write_partition_physical_disk_drive_id(fp) )
+	 if( write_partition_physical_disk_drive_id_fat32(fp) )
 	 {
 	    printf(_("Physical disk drive id 0x80 (C:) successfully written to %s\n"),
 		   argv[argc-1]);
@@ -178,7 +174,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing Windows 2000/XP/2003 master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case MBR_95B:
@@ -191,7 +187,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing Windows 95B/98/98SE/ME master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case MBR_DOS:
@@ -204,7 +200,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing DOS/Windows NT master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case MBR_SYSLINUX:
@@ -217,7 +213,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing syslinux master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case MBR_GPT_SYSLINUX:
@@ -230,7 +226,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing syslinux GPT master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case MBR_ZERO:
@@ -243,7 +239,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing empty (zeroed) master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT12_BR:
@@ -256,7 +252,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT12 boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT16_BR:
@@ -269,7 +265,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT16 boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT16FD_BR:
@@ -282,7 +278,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT16 FreeDOS boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT32NT_BR:
@@ -295,7 +291,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT32 NT boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT32PE_BR:
@@ -308,7 +304,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT32 PE boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT32FD_BR:
@@ -321,7 +317,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT32 FreeDOS boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case FAT32_BR:
@@ -334,7 +330,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing FAT32 DOS boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       case NTFS_BR:
@@ -347,7 +343,7 @@ int main(int argc, char **argv)
 	    printf(_("Failed writing NTFS Windows 7 boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
-	 }	    
+	 }
       }
       break;
       default:
@@ -364,21 +360,21 @@ void print_help(const char *szCommand)
 {
    printf(_("Usage:\n\t%s [options] [device]\nOptions:\n"), szCommand);
    printf(
-     _("    -1, --fat12     Write a FAT12 floppy boot record to device\n"));
+      _("    -1, --fat12     Write a FAT12 floppy boot record to device\n"));
    printf(
-     _("    -2, --fat32nt   Write a FAT32 partition NT boot record to device\n"));
+      _("    -2, --fat32nt   Write a FAT32 partition NT boot record to device\n"));
    printf(
-     _("    -e, --fat32pe   Write a FAT32 partition PE boot record to device\n"));
+      _("    -e, --fat32pe   Write a FAT32 partition PE boot record to device\n"));
    printf(
-     _("    -3, --fat32     Write a FAT32 partition DOS boot record to device\n"));
+      _("    -3, --fat32     Write a FAT32 partition DOS boot record to device\n"));
    printf(
-     _("    -4, --fat32free Write a FAT32 partition FreeDOS boot record to device\n"));
+      _("    -4, --fat32free Write a FAT32 partition FreeDOS boot record to device\n"));
    printf(
-     _("    -5, --fat16free Write a FAT16 partition FreeDOS boot record to device\n"));
+      _("    -5, --fat16free Write a FAT16 partition FreeDOS boot record to device\n"));
    printf(
-     _("    -6, --fat16     Write a FAT16 partition DOS boot record to device\n"));
+      _("    -6, --fat16     Write a FAT16 partition DOS boot record to device\n"));
    printf(
-     _("    -n, --ntfs      Write a NTFS partition Windows 7 boot record to device\n"));
+      _("    -n, --ntfs      Write a NTFS partition Windows 7 boot record to device\n"));
    printf(
       _("    -l, --wipelabel Reset partition disk label in boot record\n"));
    printf(
@@ -410,8 +406,9 @@ void print_help(const char *szCommand)
    printf(
       _("    -v, --version   Show program version\n"));
    printf(
-_("    -w, --write     Write automatically selected boot record to device\n\n"));
-   printf(_("    Default         Inspect current boot record\n\n"));
+      _("    -w, --write     Write automatically selected boot record to device\n\n"));
+   printf(
+      _("    Default         Inspect current boot record\n\n"));
    printf(
       _("Warning: Writing the wrong kind of boot record to a device might\n"));
    printf(
@@ -441,8 +438,8 @@ int parse_switches(int argc, char **argv, int *piBr,
    *pbKeepLabel = 1;
    *pbWritePartitionInfo = 0;
    *piHeads = -1;
-   
-   
+
+
    if(argc < 2)
       return 1;
    /* Don't parse the device */
@@ -479,9 +476,9 @@ int parse_switches(int argc, char **argv, int *piBr,
       else if( ! strcmp("--partition", argv[argc]))
 	 *pbWritePartitionInfo = 1;
       else if( ! strcmp("--mbr7", argv[argc]))
-         *piBr = MBR_WIN7;
+	 *piBr = MBR_WIN7;
       else if( ! strcmp("--mbrvista", argv[argc]))
-         *piBr = MBR_VISTA;
+	 *piBr = MBR_VISTA;
       else if( ! strcmp("--mbr", argv[argc]))
 	 *piBr = MBR_2000;
       else if( ! strcmp("--mbr95b", argv[argc]))
@@ -537,12 +534,12 @@ int parse_switches(int argc, char **argv, int *piBr,
 	       case 'p':
 		  *pbWritePartitionInfo = 1;
 		  break;
-               case '7':
-                  *piBr = MBR_WIN7;
-                  break;
-               case 'i':
-                  *piBr = MBR_VISTA;
-                  break;
+	       case '7':
+		  *piBr = MBR_WIN7;
+		  break;
+	       case 'i':
+		  *piBr = MBR_VISTA;
+		  break;
 	       case 'm':
 		  *piBr = MBR_2000;
 		  break;

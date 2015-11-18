@@ -64,7 +64,7 @@ int write_2000_mbr(FILE *fp);
    FALSE */
 int write_vista_mbr(FILE *fp);
 
-/* Writes a 7 master boot record to a file, returns TRUE on success, otherwise
+/* Writes a Windows 7 master boot record to a file, returns TRUE on success, otherwise
    FALSE */
 int write_win7_mbr(FILE *fp);
 
