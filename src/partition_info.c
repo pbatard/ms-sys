@@ -24,7 +24,7 @@
 int write_partition_number_of_heads(FILE *fp, int iHeads)
 {
    unsigned char aucBuf[2];
-   unsigned short s = iHeads < 0 ? partition_number_of_heads(fp) : iHeads;
+   unsigned short s = (iHeads < 0) ? partition_number_of_heads(fp) : (unsigned short)iHeads;
 
    if(!s)
       return 0;

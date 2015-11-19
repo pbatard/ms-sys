@@ -25,7 +25,11 @@
 #define MBR_REACTOS            19
 #define FAT16ROS_BR            20
 #define FAT32ROS_BR            21
-#define NUMBER_OF_RECORD_TYPES 22
+#define FAT32KOS_BR            22
+#define MBR_GRUB4DOS           23
+#define MBR_GRUB2              24
+#define MBR_KOLIBRIOS          25
+#define NUMBER_OF_RECORD_TYPES 26
 
 /* Returns the number of sectors on disk before partition */
 unsigned long partition_start_sector(FILE *fp);

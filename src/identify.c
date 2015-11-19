@@ -92,7 +92,7 @@ static int is_floppy(FILE *fp)
 {
 #ifdef FDGETPRM
    struct floppy_struct sFloppy;
-   
+
    return ! ioctl(fileno(fp) ,FDGETPRM, &sFloppy);
 #endif
 
@@ -113,7 +113,7 @@ static int is_partition(FILE *fp)
    int iRes2;
    long lSectors;
    int iFd = fileno(fp);
-   
+
 #ifdef BLKGETSIZE
    struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
@@ -177,7 +177,7 @@ unsigned short partition_number_of_heads(FILE *fp)
    int iRes2;
    long lSectors;
    int iFd = fileno(fp);
-   
+
 #ifdef BLKGETSIZE
    struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
@@ -221,6 +221,9 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       case MBR_GPT_SYSLINUX:
       case MBR_RUFUS:
       case MBR_REACTOS:
+      case MBR_KOLIBRIOS:
+      case MBR_GRUB4DOS:
+      case MBR_GRUB2:
       case MBR_ZERO:
       {
 	 if( ! bIsDiskDevice )
@@ -314,6 +317,7 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       case FAT32PE_BR:
       case FAT32FD_BR:
       case FAT32ROS_BR:
+      case FAT32KOS_BR:
       {
 	 if( ! bIsPartition )
 	 {
@@ -362,7 +366,7 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
 		  _("use the switch -f to force writing of a NTFS boot record\n"));
 	    }
 	    return 0;
-	 }	 
+	 }
       }
       break;
       default:
@@ -402,7 +406,7 @@ void diagnose(FILE *fp, const char *szPath)
       printf(
 	 _("it is exactly the kind of NTFS boot record this program\n"));
       printf(
-	 _("would create with the switch -n on a NTFS partition.\n"));      
+	 _("would create with the switch -n on a NTFS partition.\n"));
    }
    else if(entire_fat_12_br_matches(fp))
    {
@@ -469,6 +473,13 @@ void diagnose(FILE *fp, const char *szPath)
 	 printf(
 	    _("would create with the switch -O on a FAT32 partition.\n"));
       }
+      else if(entire_fat_32_kos_br_matches(fp))
+      {
+	 printf(
+	   _("it is exactly the kind of FAT32 KolibriOS boot record this program\n"));
+	 printf(
+	    _("would create with the switch -K on a FAT32 partition.\n"));
+      }
       else
       {
 	 printf(
@@ -477,7 +488,7 @@ void diagnose(FILE *fp, const char *szPath)
 	    _("differs from what this program would create with the\n"));
 	 printf(_("switch -6, -2, -e or -3 on a FAT16 or FAT32 partition.\n"));
       }
-   } 
+   }
    else if(is_lilo_br(fp))
    {
       printf(_("it seems to be a LILO boot record, please use lilo to\n"));
@@ -554,6 +565,27 @@ void diagnose(FILE *fp, const char *szPath)
             _("it is a ReactOS master boot record, like the one this\n"));
          printf(
             _("program creates with the switch -0 on a hard disk device.\n"));
+   }
+   else if(is_kolibrios_mbr(fp))
+   {
+         printf(
+            _("it is a KolibriOS master boot record, like the one this\n"));
+         printf(
+            _("program creates with the switch -k on a hard disk device.\n"));
+   }
+   else if(is_grub4dos_mbr(fp))
+   {
+         printf(
+            _("it is a Grub4DOS master boot record, like the one this\n"));
+         printf(
+            _("program creates with the switch -g on a hard disk device.\n"));
+   }
+   else if(is_grub2_mbr(fp))
+   {
+         printf(
+            _("it is a GRUB 2 master boot record, like the one this\n"));
+         printf(
+            _("program creates with the switch -G on a hard disk device.\n"));
    }
    else if(is_zero_mbr(fp))
    {

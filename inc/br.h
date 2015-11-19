@@ -44,6 +44,18 @@ int is_rufus_mbr(FILE *fp);
    FALSE.The file position will change when this function is called! */
 int is_reactos_mbr(FILE *fp);
 
+/* returns TRUE if the file has a Grub4DOS master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_grub4dos_mbr(FILE *fp);
+
+/* returns TRUE if the file has a Grub 2.0 master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_grub2_mbr(FILE *fp);
+
+/* returns TRUE if the file has a KolibriOS master boot record, otherwise
+   FALSE.The file position will change when this function is called! */
+int is_kolibrios_mbr(FILE *fp);
+
 /* returns TRUE if the file has a syslinux master boot record, otherwise
    FALSE.The file position will change when this function is called! */
 int is_syslinux_mbr(FILE *fp);
@@ -83,6 +95,18 @@ int write_rufus_mbr(FILE *fp);
 /* Writes a ReactOS master boot record to a file, returns TRUE on success, otherwise
    FALSE */
 int write_reactos_mbr(FILE *fp);
+
+/* Writes a Grub4DOS master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_grub4dos_mbr(FILE *fp);
+
+/* Writes a Grub 2.0 master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_grub2_mbr(FILE *fp);
+
+/* Writes a KolibriOS master boot record to a file, returns TRUE on success, otherwise
+   FALSE */
+int write_kolibrios_mbr(FILE *fp);
 
 /* Writes a syslinux master boot record to a file, returns TRUE on success, otherwise
    FALSE */

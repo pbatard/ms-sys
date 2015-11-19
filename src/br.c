@@ -112,6 +112,33 @@ int is_reactos_mbr(FILE *fp)
       is_br(fp);
 } /* is_reactos_mbr */
 
+int is_grub4dos_mbr(FILE *fp)
+{
+   #include "mbr_grub.h"
+
+   return
+      contains_data(fp, 0x0, mbr_grub_0x0, sizeof(mbr_grub_0x0)) &&
+      is_br(fp);
+} /* is_grub_mbr */
+
+int is_grub2_mbr(FILE *fp)
+{
+   #include "mbr_grub2.h"
+
+   return
+      contains_data(fp, 0x0, mbr_grub2_0x0, sizeof(mbr_grub2_0x0)) &&
+      is_br(fp);
+} /* is_grub2_mbr */
+
+int is_kolibrios_mbr(FILE *fp)
+{
+   #include "mbr_kolibri.h"
+
+   return
+      contains_data(fp, 0x0, mbr_kolibri_0x0, sizeof(mbr_kolibri_0x0)) &&
+      is_br(fp);
+} /* is_kolibri_mbr */
+
 int is_syslinux_mbr(FILE *fp)
 {
    #include "mbr_syslinux.h"
@@ -219,6 +246,15 @@ int write_reactos_mbr(FILE *fp)
       write_bootmark(fp);
 } /* write_reactos_mbr */
 
+int write_kolibrios_mbr(FILE *fp)
+{
+   #include "mbr_kolibri.h"
+
+   return
+      write_data(fp, 0x0, mbr_kolibri_0x0, sizeof(mbr_kolibri_0x0)) &&
+      write_bootmark(fp);
+} /* write_kolibri_mbr */
+
 int write_syslinux_mbr(FILE *fp)
 {
    #include "mbr_syslinux.h"
@@ -237,11 +273,29 @@ int write_syslinux_gpt_mbr(FILE *fp)
       write_bootmark(fp);
 } /* write_syslinux_gpt_mbr */
 
+int write_grub4dos_mbr(FILE *fp)
+{
+   #include "mbr_grub.h"
+
+   return
+      write_data(fp, 0x0, mbr_grub_0x0, sizeof(mbr_grub_0x0)) &&
+      write_bootmark(fp);
+}
+
+int write_grub2_mbr(FILE *fp)
+{
+   #include "mbr_grub2.h"
+
+   return
+      write_data(fp, 0x0, mbr_grub2_0x0, sizeof(mbr_grub2_0x0)) &&
+      write_bootmark(fp);
+}
+
 int write_zero_mbr(FILE *fp)
 {
    #include "mbr_zero.h"
 
    return
-      write_data(fp, 0x0,   mbr_zero_0x0, sizeof(mbr_zero_0x0)) &&
+      write_data(fp, 0x0, mbr_zero_0x0, sizeof(mbr_zero_0x0)) &&
       write_bootmark(fp);
 } /* write_zero_mbr */
