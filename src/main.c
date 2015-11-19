@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 		   argv[argc-1]);
 	 else
 	 {
-	    printf(_("Failed writing syslinux master boot record to %s\n"),
+	    printf(_("Failed writing Syslinux master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
 	 }
@@ -227,12 +227,37 @@ int main(int argc, char **argv)
 		   argv[argc-1]);
 	 else
 	 {
-	    printf(_("Failed writing syslinux GPT master boot record to %s\n"),
+	    printf(_("Failed writing Syslinux GPT master boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
 	 }
       }
       break;
+      case MBR_RUFUS:
+      {
+	 if(write_rufus_mbr(fp))
+	    printf(_("Rufus master boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing Rufus master boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }
+      }
+      break;
+      case MBR_REACTOS:
+      {
+	 if(write_reactos_mbr(fp))
+	    printf(_("ReactOS master boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing ReactOS master boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }
+      }
       case MBR_ZERO:
       {
 	 if(write_zero_mbr(fp))
@@ -285,6 +310,19 @@ int main(int argc, char **argv)
 	 }
       }
       break;
+      case FAT16ROS_BR:
+      {
+	 if(write_fat_16_ros_br(fp, bKeepLabel))
+	    printf(_("FAT16 ReactOS boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing FAT16 ReactOS boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }
+      }
+      break;
       case FAT32NT_BR:
       {
 	 if(write_fat_32_nt_br(fp, bKeepLabel))
@@ -319,6 +357,19 @@ int main(int argc, char **argv)
 	 else
 	 {
 	    printf(_("Failed writing FAT32 FreeDOS boot record to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }
+      }
+      break;
+      case FAT32ROS_BR:
+      {
+	 if(write_fat_32_ros_br(fp, bKeepLabel))
+	    printf(_("FAT32 ReactOS boot record successfully written to %s\n"),
+		   argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing FAT32 ReactOS boot record to %s\n"),
 		   argv[argc-1]);
 	    iRet = 1;
 	 }
@@ -380,6 +431,10 @@ void print_help(const char *szCommand)
    printf(
       _("    -n, --ntfs      Write a NTFS partition Windows 7 boot record to device\n"));
    printf(
+      _("    -o, --fat16ros  Write a FAT16 partition ReactOS boot record to device\n"));
+   printf(
+      _("    -O, --fat32ros  Write a FAT32 partition ReactOS boot record to device\n"));
+   printf(
       _("    -l, --wipelabel Reset partition disk label in boot record\n"));
    printf(
       _("    -p, --partition Write partition info (hidden sectors, heads and drive id)\n"));
@@ -400,9 +455,13 @@ void print_help(const char *szCommand)
    printf(
       _("    -d, --mbrdos    Write a DOS/Windows NT MBR to device\n"));
    printf(
-      _("    -s, --mbrsyslinux    Write a syslinux MBR to device\n"));
+      _("    -s, --mbrsyslinux    Write a Syslinux MBR to device\n"));
    printf(
-      _("    -t, --mbrgptsyslinux Write a syslinux GPT MBR to device\n"));
+      _("    -t, --mbrgptsyslinux Write a Syslinux GPT MBR to device\n"));
+   printf(
+      _("    -0, --mbrreactos     Write a ReactOS MBR to device\n"));
+   printf(
+      _("    -r, --mbrrufus  Write a Rufus MBR to device\n"));
    printf(
       _("    -z, --mbrzero   Write an empty (zeroed) MBR to device\n"));
    printf(
@@ -470,6 +529,10 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 *piBr = FAT32_BR;
       else if( ! strcmp("--fat32free", argv[argc]))
 	 *piBr = FAT32FD_BR;
+      else if( ! strcmp("--fat32ros", argv[argc]))
+	 *piBr = FAT32ROS_BR;
+      else if( ! strcmp("--fat16ros", argv[argc]))
+	 *piBr = FAT16ROS_BR;
       else if( ! strcmp("--fat16free", argv[argc]))
 	 *piBr = FAT16FD_BR;
       else if( ! strcmp("--fat16", argv[argc]))
@@ -496,6 +559,10 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 *piBr = MBR_SYSLINUX;
       else if( ! strcmp("--mbrgptsyslinux", argv[argc]))
 	 *piBr = MBR_GPT_SYSLINUX;
+      else if( ! strcmp("--mbrrufus", argv[argc]))
+	 *piBr = MBR_RUFUS;
+      else if( ! strcmp("--mbrreactos", argv[argc]))
+	 *piBr = MBR_REACTOS;
       else if( ! strcmp("--mbrzero", argv[argc]))
 	 *piBr = MBR_ZERO;
       else if( ! strcmp("--write", argv[argc]))
@@ -508,6 +575,9 @@ int parse_switches(int argc, char **argv, int *piBr,
 	 {
 	    switch(argv[argc][i])
 	    {
+	       case '0':
+		  *piBr = MBR_REACTOS;
+		  break;
 	       case '1':
 		  *piBr = FAT12_BR;
 		  break;
@@ -528,6 +598,12 @@ int parse_switches(int argc, char **argv, int *piBr,
 		  break;
 	       case '6':
 		  *piBr = FAT16_BR;
+		  break;
+	       case 'o':
+		  *piBr = FAT16ROS_BR;
+		  break;
+	       case 'O':
+		  *piBr = FAT32ROS_BR;
 		  break;
 	       case 'n':
 		  *piBr = NTFS_BR;
@@ -555,6 +631,9 @@ int parse_switches(int argc, char **argv, int *piBr,
 		  break;
 	       case 'd':
 		  *piBr = MBR_DOS;
+		  break;
+	       case 'r':
+		  *piBr = MBR_RUFUS;
 		  break;
 	       case 's':
 		  *piBr = MBR_SYSLINUX;
