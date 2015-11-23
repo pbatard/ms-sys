@@ -1,5 +1,7 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+??/?  2015 2.5.?    Added german man page
+
 26/9  2015 2.5.1    Added support to run on OpenBSD,
                     added german translation.
 

@@ -31,6 +31,18 @@ int contains_data(FILE *fp, unsigned long ulPosition,
 {
    unsigned char aucBuf[MAX_DATA_LEN];
 
+   if(!read_data(fp, ulPosition, aucBuf, uiLen))
+      return 0;
+   if(memcmp(pData, aucBuf, uiLen))
+      return 0;
+   return 1;
+} /* contains_data */
+
+int read_data(FILE *fp, unsigned long ulPosition,
+	       void *pData, unsigned int uiLen)
+{
+   unsigned char aucBuf[MAX_DATA_LEN];
+
    unsigned long start_read = ulPosition;
    unsigned long to_read = uiLen;
 
@@ -59,10 +71,9 @@ int contains_data(FILE *fp, unsigned long ulPosition,
       return 0;
    if(!fread(aucBuf, to_read, 1, fp))
       return 0;
-   if(memcmp(pData, aucBuf + ulPosition - start_read, uiLen))
-      return 0;
+   memcpy(pData, aucBuf + ulPosition - start_read, uiLen);
    return 1;
-} /* contains_data */
+} /* read_data */
 
 int write_data(FILE *fp, unsigned long ulPosition,
 	       const void *pData, unsigned int uiLen)

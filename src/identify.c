@@ -45,6 +45,7 @@
 #include "fat32pe.h"
 #include "fat32fd.h"
 #include "ntfs.h"
+#include "oem_id.h"
 #include "nls.h"
 #include "identify.h"
 
@@ -379,6 +380,8 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
 
 void diagnose(FILE *fp, const char *szPath)
 {
+   char *pc;
+   
    if(is_fat_12_fs(fp))
       printf(_("%s has a FAT12 file system.\n"), szPath);
    if(is_fat_16_fs(fp))
@@ -468,71 +471,74 @@ void diagnose(FILE *fp, const char *szPath)
    }
    else if(is_dos_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft DOS/NT/95A master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -d on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft DOS/NT/95A master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -d on a hard disk device.\n"));
    }
    else if(is_dos_f2_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft DOS/NT/95A master boot record with the undocumented\n"));
-	 printf(
-	    _("F2 instruction. You will get equal functionality with the MBR this\n"));
-	 printf(
-	    _("program creates with the switch -d on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft DOS/NT/95A master boot record with the undocumented\n"));
+      printf(
+	 _("F2 instruction. You will get equal functionality with the MBR this\n"));
+      printf(
+	 _("program creates with the switch -d on a hard disk device.\n"));
    }
    else if(is_95b_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft 95B/98/98SE/ME master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -9 on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft 95B/98/98SE/ME master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -9 on a hard disk device.\n"));
    }
    else if(is_2000_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft 2000/XP/2003 master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -m on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft 2000/XP/2003 master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -m on a hard disk device.\n"));
    }
    else if(is_vista_mbr(fp))
    {
-         printf(
-            _("it is a Microsoft Vista master boot record, like the one this\n"));
-         printf(
-            _("program creates with the switch -i on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft Vista master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -i on a hard disk device.\n"));
    }
    else if(is_win7_mbr(fp))
    {
-         printf(
-            _("it is a Microsoft 7 master boot record, like the one this\n"));
-         printf(
-            _("program creates with the switch -7 on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft 7 master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -7 on a hard disk device.\n"));
    }
    else if(is_syslinux_mbr(fp))
    {
-	 printf(
-	    _("it is a public domain syslinux master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -s on a hard disk device.\n"));
+      printf(
+	 _("it is a public domain syslinux master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -s on a hard disk device.\n"));
    }
    else if(is_syslinux_gpt_mbr(fp))
    {
-	 printf(
-	    _("it is a GPL syslinux GPT master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -t on a hard disk device.\n"));
+      printf(
+	 _("it is a GPL syslinux GPT master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -t on a hard disk device.\n"));
    }
    else if(is_zero_mbr(fp))
    {
-	 printf(
-	    _("it is a zeroed non-bootable master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -z on a hard disk device.\n"));
+      printf(
+	 _("it is a zeroed non-bootable master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -z on a hard disk device.\n"));
    }
    else
       printf(_("it is an unknown boot record\n"));
+   pc = read_oem_id(fp);
+   if(pc)
+      printf(_("The OEM ID is %s\n"), pc);
 } /* diagnose */
 
 int smart_select(FILE *fp)

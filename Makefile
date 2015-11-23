@@ -78,14 +78,14 @@ INC_FILES = $(wildcard $(INC)/*.h)
 
 MESSAGES = $(PO)/messages.po
 
-MAN_SRC = $(wildcard $(MAN)/*.*)
+MAN_SRC = $(wildcard $(MAN)/*.* $(MAN)/??/*.*)
 
 PO_FILES = $(filter-out $(MESSAGES),$(wildcard $(PO)/*.po))
 MO_FILES = $(PO_FILES:$(PO)/%.po=$(MO)/%.mo)
 LANGUAGES ?= $(PO_FILES:$(PO)/%.po=%)
 NLS_FILES = $(LANGUAGES:%=$(DESTDIR)$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo)
 MAN_FILES = $(foreach FILE, $(MAN_SRC), \
-              $(DESTDIR)$(MANDIR)/man$(subst .,,$(suffix $(FILE)))/$(FILE:$(MAN)/%=%))
+              $(DESTDIR)$(subst $(MAN),$(MANDIR),$(dir $(FILE)))man$(subst .,,$(suffix $(FILE)))/$(notdir $(FILE)))
 
 FILES = $(SRC_FILES:$(SRC)/%.c=%)
 
@@ -119,8 +119,13 @@ $(DESTDIR)$(LOCALEDIR)/%/$(MESSDIR)/$(PACKAGE).mo: $(MO)/%.mo
 	mkdir -p $(DESTDIR)$(LOCALEDIR)/$*/$(MESSDIR)
 	install -D -m 644 $^ $@
 
-$(DESTDIR)$(MANDIR)/%: $(MAN)/$(*F)
-	install -D -m 644 $(MAN)/$(*F) $@
+$(DESTDIR)$(MANDIR)/%: $(MAN)/$(dir $(*D))/$(*F)
+	install -D -m 644 $(MAN)/$(dir $(*D))$(*F) $@
+	gzip -f $@
+
+#$(DESTDIR)$(MANDIR)/%: $(MAN)/$(*F)
+#	echo t: $<
+#	install -D -m 644 $(MAN)/$(*F) $@
 
 $(BIN)/%: $(OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)

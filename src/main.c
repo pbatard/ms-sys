@@ -28,18 +28,20 @@
 #include "fat32nt.h"
 #include "fat32pe.h"
 #include "ntfs.h"
+#include "oem_id.h"
 #include "br.h"
 #include "identify.h"
 #include "nls.h"
 #include "partition_info.h"
 
-#define VERSION "2.5.1"
+#define VERSION "2.5.2alfa"
 
 void print_help(const char *szCommand);
 void print_version(void);
 int parse_switches(int argc, char **argv, int *piBr,
 		   int *pbForce, int *pbPrintVersion,
-		   int *pbKeepLabel, int *pbWritePartitionInfo, int *piHeads);
+		   int *pbKeepLabel, int *pbWritePartitionInfo, int *piHeads,
+		   char **pszOemId);
 int isnumber(const char *szString);
 
 int main(int argc, char **argv)
@@ -51,11 +53,12 @@ int main(int argc, char **argv)
    int bKeepLabel = 1;
    int bWritePartitionInfo = 0;
    int iHeads = -1;
+   char *szOemId = NULL;
    int iRet = 0;
 
    nls_init();
    if(parse_switches(argc, argv, &iBr, &bForce, &bPrintVersion,
-		     &bKeepLabel, &bWritePartitionInfo, &iHeads))
+		     &bKeepLabel, &bWritePartitionInfo, &iHeads, &szOemId))
    {
       print_help(argv[0]);
       return 0;
@@ -66,7 +69,8 @@ int main(int argc, char **argv)
       if(argc < 3)
 	 return 0;
    }
-   fp=fopen(argv[argc-1], (iBr || bWritePartitionInfo) ? "r+b" : "rb");
+   fp=fopen(argv[argc-1],
+	    (iBr || bWritePartitionInfo || szOemId) ? "r+b" : "rb");
    if(!fp)
    {
       printf(_("Unable to open %s, %s\n"), argv[argc-1], strerror(errno));
@@ -82,6 +86,14 @@ int main(int argc, char **argv)
    if(iBr && !bForce)
    {
       if( ! sanity_check(fp, argv[argc-1], iBr, 1) )
+      {
+	 fclose(fp);
+	 return 1;
+      }
+   }
+   if(szOemId && !bForce)
+   {
+      if( ! ok_to_write_oem_id(fp, argv[argc-1], 1) )
       {
 	 fclose(fp);
 	 return 1;
@@ -136,7 +148,7 @@ int main(int argc, char **argv)
    {
       case NO_WRITING:
       {
-	 if( ! bWritePartitionInfo )
+	 if( (!bWritePartitionInfo) && (!szOemId) )
 	 {
 	    diagnose(fp, argv[argc-1]);
 	 }
@@ -356,6 +368,18 @@ int main(int argc, char **argv)
       }
       break;
    }
+   if(szOemId)
+   {
+      if(write_oem_id(fp, szOemId))
+	 printf(_("OEM ID '%s' successfully written to %s\n"),
+		szOemId, argv[argc-1]);
+	 else
+	 {
+	    printf(_("Failed writing OEM ID to %s\n"),
+		   argv[argc-1]);
+	    iRet = 1;
+	 }	    
+   }
    fclose(fp);
    return iRet;
 } /* main */
@@ -387,6 +411,8 @@ void print_help(const char *szCommand)
       _("                    to boot record\n"));
    printf(
       _("    -H, --heads <n> Manually set number of heads if partition info is written\n"));
+   printf(
+      _("    -O, --writeoem <s>   Write OEM ID string <s> to file system\n"));
    printf(
       _("    -7, --mbr7      Write a Windows 7 MBR to device\n"));
    printf(
@@ -430,7 +456,7 @@ void print_version(void)
 int parse_switches(int argc, char **argv, int *piBr,
 		   int *pbForce, int *pbPrintVersion,
 		   int *pbKeepLabel, int *pbWritePartitionInfo,
-		   int *piHeads)
+		   int *piHeads, char **pszOemId)
 {
    int bHelp = 0;
    int i;
@@ -576,6 +602,8 @@ int parse_switches(int argc, char **argv, int *piBr,
       else if((!strcmp("--heads", argv[argc-1]) || !strcmp("-H", argv[argc-1])) &&
 	      isnumber(argv[argc]))
 	 *piHeads = atoi(argv[argc--]);
+      else if((!strcmp("--writeoem", argv[argc-1]) || !strcmp("-O", argv[argc-1])))
+	 *pszOemId = argv[argc--];
       else
 	 bHelp = 1;
    }
