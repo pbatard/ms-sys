@@ -37,8 +37,11 @@ void print_version(void);
 int parse_switches(int argc, char **argv, int *piBr,
 		   int *pbForce, int *pbPrintVersion,
 		   int *pbKeepLabel, int *pbWritePartitionInfo, int *piHeads,
-		   char **pszOemId);
+		   char **pszOemId, unsigned long *pulBytesPerSector);
 int isnumber(const char *szString);
+
+/* Keep the bytes per sector as a global */
+unsigned long ulBytesPerSector = 512;
 
 int main(int argc, char **argv)
 {
@@ -54,7 +57,8 @@ int main(int argc, char **argv)
 
    nls_init();
    if(parse_switches(argc, argv, &iBr, &bForce, &bPrintVersion,
-		     &bKeepLabel, &bWritePartitionInfo, &iHeads, &szOemId))
+		     &bKeepLabel, &bWritePartitionInfo, &iHeads,
+		     &szOemId, &ulBytesPerSector))
    {
       print_help(argv[0]);
       return 0;
@@ -408,6 +412,8 @@ void print_help(const char *szCommand)
    printf(
       _("    -H, --heads <n> Manually set number of heads if partition info is written\n"));
    printf(
+      _("    -B, --bps <n>   Manually set number of bytes per sector (default 512)\n"));
+   printf(
       _("    -O, --writeoem <s>   Write OEM ID string <s> to file system\n"));
    printf(
       _("    -7, --mbr7      Write a Windows 7 MBR to device\n"));
@@ -451,9 +457,9 @@ void print_version(void)
 } /* print_version */
 
 int parse_switches(int argc, char **argv, int *piBr,
-		   int *pbForce, int *pbPrintVersion,
-		   int *pbKeepLabel, int *pbWritePartitionInfo,
-		   int *piHeads, char **pszOemId)
+		   int *pbForce, int *pbPrintVersion, int *pbKeepLabel,
+		   int *pbWritePartitionInfo, int *piHeads,
+		   char **pszOemId, unsigned long *pulBytesPerSector)
 {
    int bHelp = 0;
    int i;
@@ -464,6 +470,7 @@ int parse_switches(int argc, char **argv, int *piBr,
    *pbKeepLabel = 1;
    *pbWritePartitionInfo = 0;
    *piHeads = -1;
+   *pulBytesPerSector = 512;
 
 
    if(argc < 2)
@@ -599,6 +606,11 @@ int parse_switches(int argc, char **argv, int *piBr,
       else if((!strcmp("--heads", argv[argc-1]) || !strcmp("-H", argv[argc-1])) &&
 	      isnumber(argv[argc]))
 	 *piHeads = atoi(argv[argc--]);
+      else if((!strcmp("--bps", argv[argc-1]) || !strcmp("-B", argv[argc-1])) &&
+	      isnumber(argv[argc]))
+	 *pulBytesPerSector = strtoul(argv[argc--], NULL, 0);
+	 if ((*pulBytesPerSector < 512) || (*pulBytesPerSector > 65536))
+		  *pulBytesPerSector = 512;
       else if((!strcmp("--writeoem", argv[argc-1]) || !strcmp("-O", argv[argc-1])))
 	 *pszOemId = argv[argc--];
       else
