@@ -1,0 +1,260 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH MS-SYS 1 "December 26, 2005"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH "NAMN"
+ms-sys \- skriv Microsoft bootblock
+.SH SYNOPSIS
+.B ms-sys
+.RI "[val] [enhet]"
+.SH "BESKRIVNING"
+\fBms-sys\fP skriver Microsoft kompatibla bootsektorer.
+.SH OPTIONS
+En sammanfattning av alla val listas nedan:
+.TP
+.B \-1, \-\-fat12
+Skriv en FAT12 diskett boot sektor till enheten.
+.TP
+.B \-2, \-\-fat32nt
+Skriv en FAT32 partition NT boot sektor till enheten.
+.TP
+.B \-e, \-\-fat32pe
+Skriv en FAT32 partition PE boot sektor till enheten, f\[:o]r USB installation och
+reparation.
+.TP
+.B \-3, \-\-fat32
+Skriv en FAT32 partition DOS (Win9x) boot sektor till enheten.
+.TP
+.B \-4, \-\-fat32free
+Skriv en FAT32 partition FreeDOS boot sektor till enheten.
+.TP
+.B \-5, \-\-fat16free
+Skriv en FAT16 partition FreeDOS boot sektor till enheten.
+.TP
+.B \-6, \-\-fat16
+Skriv en FAT16 partition DOS (Win9x) boot sektor till enheten.
+.TP
+.B \-n, \-\-ntfs
+Skriv en NTFS partition Windows 7 boot sektor till enheten. Denna
+funktionalitet \[:a]r dock enbart experimentell och sannolikt ej användbar.
+.TP
+.B \-o, \-\-fat16ros
+Skriv en FAT16 partition ReactOS boot sektor till enheten.
+.TP
+.B \-c, \-\-fat32ros
+Skriv en FAT32 partition ReactOS boot sektor till enheten.
+.TP
+.B \-q, \-\-fat32kos
+Skriv en FAT32 partition KolibriOS boot sektor till enheten.
+.TP
+.B \-l, \-\-wipelabel
+Nollst\[:a]ll partitionens etikett i boot sektorn.
+.TP
+.B \-p, \-\-partition
+Skriv partitionsinformation (dolda sektorer, huvuden och drive id) till boot
+sektor. Detta kan beh\[:o]vas p\[oa] en del partitioner beroende p\[oa] vilket
+program som skapade filsystemet.
+.TP
+.B \-H <n>, \-\-heads <n>
+Ange antal huvuden d\[oa] valet -p anv\[:a]nds.
+.TP
+.B \-O <s>, \-\-writeoem <s>
+Skriver OEM ID <s> till filsystem.
+.TP
+.B \-S <x>, \-\-writewds <x>
+Skriver hexadecimalt <x> Windows Disk Signatur till MBR.
+.TP
+.B \-7, \-\-mbr7
+Skriv en Windows 7 master boot sektor till enheten.
+Detta \[:a]ndrar ej windows disk signatur (byte 01b8-01bd).
+Denna MBR kan boota viss partitionstyper bortom cylinder
+1024 med hj\[:a]lp av LBA-adressering.
+.TP
+.B \-i, \-\-mbrvista
+Skriv en Windows Vista master boot sektor till enheten.
+Detta \[:a]ndrar ej windows disk signatur (byte 01b8-01bd).
+Denna MBR kan boota viss partitionstyper bortom cylinder
+1024 med hj\[:a]lp av LBA-adressering.
+.TP
+.B \-m, \-\-mbr
+Skriv en Windows 2000/XP/2003 master boot sektor till enheten.
+Detta \[:a]ndrar ej windows disk signatur (byte 01b8-01bd).
+Denna MBR kan boota vissa partitionstyper bortom cylinder
+1024 med hj\[:a]lp av LBA-adressering.
+.TP
+.B \-9, \-\-mbr95b
+Skriv en Windows 95B/98/98SE/ME master boot sektor till enheten.
+Detta \[:a]ndrar ej windows disk signatur (byte 01b8-01bd) eller
+boot enhet och tid (byte 00da-00df).
+Denna MBR kan boota FAT-LBA partitioner av typ 0c och 0e bortom
+cylinder 1024 med hj\[:a]lp av LBA-adressering.
+.TP
+.B \-d, \-\-mbrdos
+Skriv en DOS/Windows NT master boot sektor till enheten.
+Detta \[:a]ndrar ej windows disk signatur (byte 01b8-01bd).
+Denna MBR kan inte boota bortom cylinder 1024 d\[oa] den ej st\[:o]djer
+LBA-adressering.
+.TP
+.B \-s, \-\-mbrsyslinux
+Skriv en syslinux master boot sektor till enheten.
+Detta \[:a]ndrar ej windows disk signatur (byte 01b8-01bd).
+Denna MBR kan boota alla partitionstyper bortom cylinder
+1024 med hj\[:a]lp av LBA-adressering.
+.TP
+.B \-t, \-\-mbrgptsyslinux
+Skriv en GPL syslinux GPT MBR till enheten.
+Denna MBR bootar fr\[oa]n en GPT partitionstabell.
+.TP
+.B \-a, \-\-mbrreactos
+Skriv en ReactOS MBR till enheten.
+.TP
+.B \-k, \-\-mbrkolibrios
+Skriv en KolibriOS MBR till enheten.
+.TP
+.B \-r, \-\-mbrrufus
+Skriv en Rufus MBR till enheten.
+Denna MBR bootar fr\[oa]n en GPT partitionstabell.
+.TP
+.B \-g, \-\-mbrgrub4dos
+Skriv en Grub4Dos MBR till enheten.
+.TP
+.B \-b, \-\-mbrgrub2
+Skriv en Grub 2 MBR till enheten.
+.TP
+.B \-z, \-\-mbrzero
+Skriv en tom (nollst\[:a]lld, icke-bootbar) master boot record till enheten.
+Nollst\[:a]ller alla byte utom partitionstabellen och signatur id (bytes 01be-01ff). 
+Denna funktionalitet motsvarar den tomma DOS partitionstabell som fdisk skapar.
+.TP
+.B \-f, \-\-force
+Tvingar fram skrivning av boot sektor.
+.TP
+.B \-h, \-\-help
+Visar hj\[:a]lp.
+.TP
+.B \-v, \-\-version
+Visar programmets version.
+.TP
+.B \-w, \-\-write
+Skriv automatiskt vald boot sektor till enheten.
+.P
+Om ms-sys startas utan val g\[:o]rs en enkel diagnos av vald enhet.
+.br
+.SH "EXEMPEL"
+.P
+Notera att Windows ME \[:a]r ej anv\[:a]ndbart f\[:o]r att skapa frist\[oa]ende
+bootdisketter. Dock fungerar Win9x och DOS med de f\[:o]rsta tv\[oa] exemplen.
+.P
+.B Skapande av en 1.68 MB bootbar diskett
+.TP
+Detta exempel f\[:o]ruts\[:a]tter att du har din windowsinstallation monterad under
+/dosc samt att du har verktygen mtools och fdformat installerade.
+.P
+fdformat /dev/fd0u1680
+.br
+mformat a:
+.br
+ms-sys -w /dev/fd0
+.br
+mcopy /dosc/io.sys a:
+.br
+mcopy /dosc/msdos.sys a:
+.br
+mcopy /dosc/command.com a:
+.P
+.B Skapande av en bootbar 2.8 MB diskettavbild att anv\[:a]nda med en
+el-torito bootbar CD
+.P
+dd if=/dev/zero of=floppy288.img bs=1024 count=2880
+.br
+/sbin/mkdosfs floppy288.img
+.br
+ms-sys -1 -f floppy288.img
+.br
+su
+.br
+mount -o loop floppy288.img /mnt
+.br
+cp msdos.sys /mnt/
+.br
+cp io.sys /mnt/
+.br
+cp command.com /mnt/
+.br
+(L\[:a]mpligen installeras \[:a]ven config.sys och autoexec.bat med st\[:o]d
+f\[:o]r CDROM)
+.br
+umount /mnt
+.br
+exit
+.br
+cp floppy288.img cd-files/boot.img
+.br
+mkisofs -b boot.img -c boot.cat -o cdimage.iso cd\-files
+.br
+(br\[:a]nn sedan filen cdimage.iso till en CD med cdrecord eller annat program)
+.P
+.B  \[oA]terl\[:a]sning fr\[oa]n backup av Win9x eller Win ME till en ny
+h\[oa]rddisk
+.P
+Steg 1, anv\[:a]nd GNU parted f\[:o]r att skapa FAT32 partition och filsystem:
+.P
+parted (skapa sedan partition och filsystem)
+.P
+Steg 2, skriv MBR:
+.P
+ms-sys -w /dev/hda
+.P
+Steg 3, skriv FAT32 partitionens bootsektor:
+.P
+ms-sys -w /dev/hda1
+.P
+Steg 4, montera ditt nya filsystem:
+.P
+mount /dev/hda1 /mnt
+.P
+Step 5, l\[:a]s tillbaka din backup
+.P
+cd /mnt; tar -xzvf /path/to/my_windows_backup_file.tgz
+.br
+.SH "MILJ\[:O]VARIABLER"
+Milj\[:o]variablerna LANG och LC_ALL har sin vanliga betydelse, dock \[:a]r
+antalet \[:o]vers\[:a]ttningar begr\[:a]nsat.
+.br
+.SH "FEL"
+Det har kommit rapporter om icke bootbara FAT32 partitioner som skapats med
+"mformat -F c:". Samma problem har ocks\[oa] rapporterats om partitioner
+formatterats med mkdosfs och mkfs.vfat. En workaround \[:a]r att anv\[:a]nda
+gnu parted f\[:o]r att skapa partitionen i st\[:a]llet. Sen version 1.1.3 har
+ms-sys valet \-p som skall l\[:o]sa problemet. Tyv\[:a]rr fungerar ej valet \-p
+automatiskt med Linux k\[:a]rna 2.6 och ej heller gnu parted fungerar
+tillf\[:o]rlitligt med k\[:a]rna 2.6. Workaround som \[oa]terst\[oa]r \[:a]r att
+anv\[:a]nda ms-sys med Linux k\[:a]rna 2.4 eller manuellt ange antalet huvuden
+med valet \-H. Om systemet har bootats med LILO kan det korrekta antalet huvuden
+f\[oa]s fram av kommandot "lilo -T geom".
+.P
+NTFS-partitions bootsektorer skrivna med ms-sys \[:a]r sannolikt ej
+anv\[:a]ndbara.
+Fr\[oa]n Windows 7 anv\[:a]ndare har det rapporterats att om man g\[:o]r
+"sysprep" innan man skapar en avbild av en NTFS partition kan det g\[:o]ra den
+\[oa]terskapade partitionen bootbar.
+.SH AUTHOR
+Denna manualsida skrevs ursprungligen av G\[:u]rkan Seng\[:u]n och har
+d\[:a]refter uppdaterats av Henrik Carlqvist. Programmet ms-sys har till
+st\[:o]rsta delen skrivits avHenrik Carlqvist, filen CONTRIBUTORS i
+k\[:a]llkodsarkivet inneh\[oa]ller en komplett lista \[:o]ver de som bidragit.
+.SH "SE OCKS\[oA]"
+mformat(1)  fdformat(8)  mkdosfs(8)  mkisofs(8)  parted(8)

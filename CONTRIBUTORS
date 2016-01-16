@@ -14,9 +14,11 @@ Till Wimmer                     contributed FreeDOS FAT16 & FAT32 boot records
 Alon Bar-Lev                    patched Makefile to support DESTDIR
 Rene Arends                     added support for Win7 and Vista MBRs
 Peter Daum			patch for manually setting nr of heads in BPB
-Pete Batard                     added NTFS Win7 experimental support
+Pete Batard                     added NTFS Win7 experimental support,
+                                Grub2, Grub4Dos, KolibriOS, ReactOS, Rufus MBR
+                                and experimental large sector support.
 Sven Köhler                     tested syslinux GPT MBR, updated MBR to 6.02
 Michael Schierl                 contributed and tested Windows PE FAT32 BR
 Mahmoud Al-Qudsi (NeoSmart Technologies)    contributed FreeBSD support
 Jiri B				contributed OpenBSD support
-joergt                          contributed german translation
+Jörg Jenderek                   contributed german translation and man-page

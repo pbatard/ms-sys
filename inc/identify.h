@@ -3,25 +3,33 @@
 
 #include <stdio.h>
 
-#define NO_WRITING 0
-#define AUTO_BR    1
-#define MBR_DOS    2
-#define FAT12_BR   3
-#define FAT16_BR   4
-#define FAT32_BR   5
-#define FAT32NT_BR 6
-#define MBR_95B    7
-#define MBR_2000   8
-#define MBR_VISTA  9
-#define MBR_WIN7   10
-#define MBR_SYSLINUX  11
-#define MBR_ZERO   12
-#define FAT16FD_BR 13
-#define FAT32FD_BR 14
-#define NTFS_BR    15
-#define MBR_GPT_SYSLINUX  16
-#define FAT32PE_BR 17
-#define NUMBER_OF_RECORD_TYPES 	18
+#define NO_WRITING              0
+#define AUTO_BR                 1
+#define MBR_DOS                 2
+#define FAT12_BR                3
+#define FAT16_BR                4
+#define FAT32_BR                5
+#define FAT32NT_BR              6
+#define MBR_95B                 7
+#define MBR_2000                8
+#define MBR_VISTA               9
+#define MBR_WIN7               10
+#define MBR_SYSLINUX           11
+#define MBR_ZERO               12
+#define FAT16FD_BR             13
+#define FAT32FD_BR             14
+#define FAT32PE_BR             15
+#define NTFS_BR                16
+#define MBR_GPT_SYSLINUX       17
+#define MBR_RUFUS              18
+#define MBR_REACTOS            19
+#define FAT16ROS_BR            20
+#define FAT32ROS_BR            21
+#define FAT32KOS_BR            22
+#define MBR_GRUB4DOS           23
+#define MBR_GRUB2              24
+#define MBR_KOLIBRIOS          25
+#define NUMBER_OF_RECORD_TYPES 26
 
 /* Returns the number of sectors on disk before partition */
 unsigned long partition_start_sector(FILE *fp);

@@ -1,5 +1,5 @@
 /******************************************************************
-    Copyright (C) 2009  Henrik Carlqvist
+    Copyright (C) 2009-2015  Henrik Carlqvist
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,12 +39,9 @@
 #include "br.h"
 #include "fat12.h"
 #include "fat16.h"
-#include "fat16fd.h"
 #include "fat32.h"
-#include "fat32nt.h"
-#include "fat32pe.h"
-#include "fat32fd.h"
 #include "ntfs.h"
+#include "oem_id.h"
 #include "nls.h"
 #include "identify.h"
 
@@ -95,7 +92,7 @@ static int is_floppy(FILE *fp)
 {
 #ifdef FDGETPRM
    struct floppy_struct sFloppy;
-   
+
    return ! ioctl(fileno(fp) ,FDGETPRM, &sFloppy);
 #endif
 
@@ -116,7 +113,7 @@ static int is_partition(FILE *fp)
    int iRes2;
    long lSectors;
    int iFd = fileno(fp);
-   
+
 #ifdef BLKGETSIZE
    struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
@@ -180,7 +177,7 @@ unsigned short partition_number_of_heads(FILE *fp)
    int iRes2;
    long lSectors;
    int iFd = fileno(fp);
-   
+
 #ifdef BLKGETSIZE
    struct hd_geometry sGeometry;
    iRes1 = ioctl(iFd, BLKGETSIZE, &lSectors);
@@ -222,6 +219,11 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       case MBR_DOS:
       case MBR_SYSLINUX:
       case MBR_GPT_SYSLINUX:
+      case MBR_RUFUS:
+      case MBR_REACTOS:
+      case MBR_KOLIBRIOS:
+      case MBR_GRUB4DOS:
+      case MBR_GRUB2:
       case MBR_ZERO:
       {
 	 if( ! bIsDiskDevice )
@@ -284,6 +286,7 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       break;
       case FAT16_BR:
       case FAT16FD_BR:
+      case FAT16ROS_BR:
       {
 	 if( ! bIsPartition )
 	 {
@@ -313,6 +316,8 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
       case FAT32NT_BR:
       case FAT32PE_BR:
       case FAT32FD_BR:
+      case FAT32ROS_BR:
+      case FAT32KOS_BR:
       {
 	 if( ! bIsPartition )
 	 {
@@ -361,7 +366,7 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
 		  _("use the switch -f to force writing of a NTFS boot record\n"));
 	    }
 	    return 0;
-	 }	 
+	 }
       }
       break;
       default:
@@ -379,6 +384,8 @@ int sanity_check(FILE *fp, const char *szPath, int iBr, int bPrintMessages)
 
 void diagnose(FILE *fp, const char *szPath)
 {
+   char *pc;
+   
    if(is_fat_12_fs(fp))
       printf(_("%s has a FAT12 file system.\n"), szPath);
    if(is_fat_16_fs(fp))
@@ -399,7 +406,7 @@ void diagnose(FILE *fp, const char *szPath)
       printf(
 	 _("it is exactly the kind of NTFS boot record this program\n"));
       printf(
-	 _("would create with the switch -n on a NTFS partition.\n"));      
+	 _("would create with the switch -n on a NTFS partition.\n"));
    }
    else if(entire_fat_12_br_matches(fp))
    {
@@ -424,6 +431,13 @@ void diagnose(FILE *fp, const char *szPath)
 	 printf(
 	    _("would create with the switch -5 on a FAT16 partition.\n"));
       }
+      else if(entire_fat_16_ros_br_matches(fp))
+      {
+	 printf(
+	  _("it is exactly the kind of FAT16 ReactOS boot record this program\n"));
+	 printf(
+	    _("would create with the switch -o on a FAT16 partition.\n"));
+      }
       else if(entire_fat_32_br_matches(fp))
       {
 	 printf(
@@ -441,7 +455,7 @@ void diagnose(FILE *fp, const char *szPath)
       else if(entire_fat_32_pe_br_matches(fp))
       {
 	 printf(
-	   _("it is exactly the kind of FAT32 NT boot record this program\n"));
+	   _("it is exactly the kind of FAT32 PE boot record this program\n"));
 	 printf(
 	    _("would create with the switch -e on a FAT32 partition.\n"));
       }
@@ -452,6 +466,20 @@ void diagnose(FILE *fp, const char *szPath)
 	 printf(
 	    _("would create with the switch -4 on a FAT32 partition.\n"));
       }
+      else if(entire_fat_32_ros_br_matches(fp))
+      {
+	 printf(
+	   _("it is exactly the kind of FAT32 ReactOS boot record this program\n"));
+	 printf(
+	    _("would create with the switch -c on a FAT32 partition.\n"));
+      }
+      else if(entire_fat_32_kos_br_matches(fp))
+      {
+	 printf(
+	   _("it is exactly the kind of FAT32 KolibriOS boot record this program\n"));
+	 printf(
+	    _("would create with the switch -q on a FAT32 partition.\n"));
+      }
       else
       {
 	 printf(
@@ -460,7 +488,7 @@ void diagnose(FILE *fp, const char *szPath)
 	    _("differs from what this program would create with the\n"));
 	 printf(_("switch -6, -2, -e or -3 on a FAT16 or FAT32 partition.\n"));
       }
-   } 
+   }
    else if(is_lilo_br(fp))
    {
       printf(_("it seems to be a LILO boot record, please use lilo to\n"));
@@ -468,71 +496,164 @@ void diagnose(FILE *fp, const char *szPath)
    }
    else if(is_dos_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft DOS/NT/95A master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -d on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft DOS/NT/95A master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -d on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_dos_f2_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft DOS/NT/95A master boot record with the undocumented\n"));
-	 printf(
-	    _("F2 instruction. You will get equal functionality with the MBR this\n"));
-	 printf(
-	    _("program creates with the switch -d on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft DOS/NT/95A master boot record with the undocumented\n"));
+      printf(
+	 _("F2 instruction. You will get equal functionality with the MBR this\n"));
+      printf(
+	 _("program creates with the switch -d on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_95b_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft 95B/98/98SE/ME master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -9 on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft 95B/98/98SE/ME master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -9 on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_2000_mbr(fp))
    {
-	 printf(
-	    _("it is a Microsoft 2000/XP/2003 master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -m on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft 2000/XP/2003 master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -m on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_vista_mbr(fp))
    {
-         printf(
-            _("it is a Microsoft Vista master boot record, like the one this\n"));
-         printf(
-            _("program creates with the switch -i on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft Vista master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -i on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_win7_mbr(fp))
    {
-         printf(
-            _("it is a Microsoft 7 master boot record, like the one this\n"));
-         printf(
-            _("program creates with the switch -7 on a hard disk device.\n"));
+      printf(
+	 _("it is a Microsoft 7 master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -7 on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_syslinux_mbr(fp))
    {
-	 printf(
-	    _("it is a public domain syslinux master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -s on a hard disk device.\n"));
+      printf(
+	 _("it is a public domain syslinux master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -s on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_syslinux_gpt_mbr(fp))
    {
-	 printf(
-	    _("it is a GPL syslinux GPT master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -t on a hard disk device.\n"));
+      printf(
+	 _("it is a GPL syslinux GPT master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -t on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
+   }
+   else if(is_rufus_mbr(fp))
+   {
+      printf(
+	 _("it is a Rufus master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -r on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
+   }
+   else if(is_reactos_mbr(fp))
+   {
+      printf(
+	 _("it is a ReactOS master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -a on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
+   }
+   else if(is_kolibrios_mbr(fp))
+   {
+      printf(
+	 _("it is a KolibriOS master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -k on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
+   }
+   else if(is_grub4dos_mbr(fp))
+   {
+      printf(
+	 _("it is a Grub4DOS master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -g on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
+   }
+   else if(is_grub2_mbr(fp))
+   {
+      printf(
+	 _("it is a GRUB 2 master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -b on a hard disk device.\n"));
+      printf(
+	 _("It has windows disk signature 0x%08x.\n"),
+	 read_windows_disk_signature(fp));
    }
    else if(is_zero_mbr(fp))
    {
-	 printf(
-	    _("it is a zeroed non-bootable master boot record, like the one this\n"));
-	 printf(
-	    _("program creates with the switch -z on a hard disk device.\n"));
+      printf(
+	 _("it is a zeroed non-bootable master boot record, like the one this\n"));
+      printf(
+	 _("program creates with the switch -z on a hard disk device.\n"));
+   }
+   else if(is_zero_mbr_not_including_disk_signature_or_copy_protect(fp))
+   {
+      printf(
+	 _("it is a non-bootable master boot record, almost like the one this\n"));
+      printf(
+	 _("program creates with the switch -z on a hard disk device but\n"));
+      printf(
+	 _("with windows disk signature 0x%08x\n"),
+	 read_windows_disk_signature(fp));
+      printf(
+	 _("which this program can write with switch -S and copy protect\n"));
+      printf(
+	 _("bytes 0x%04x (%s).\n"),
+	 read_mbr_copy_protect_bytes(fp),
+	 read_mbr_copy_protect_bytes_explained(fp));
    }
    else
       printf(_("it is an unknown boot record\n"));
+   pc = read_oem_id(fp);
+   if(pc)
+      printf(_("The OEM ID is %s\n"), pc);
 } /* diagnose */
 
 int smart_select(FILE *fp)

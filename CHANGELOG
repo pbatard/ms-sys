@@ -1,5 +1,14 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+16/1  2016 2.5.2    Added german man page,
+                    added support for Grub2 and Grub4Dos MBR,
+                    added support for KolibriOS MBR and FAT32 boot record,
+                    added support for ReactOS MBR, FAT32 and FAT16 BR,
+                    added support for Rufus MBR,
+                    added experimental support for large sectors ( > 512),
+                    now possible to alter OEM ID of FAT and NTFS boot records.
+                    now possible to alter Windows Disk Signature in MBR.
+
 26/9  2015 2.5.1    Added support to run on OpenBSD,
                     added german translation.
 
