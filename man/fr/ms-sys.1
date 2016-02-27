@@ -1,0 +1,256 @@
+.\"                                      Hey, EMACS: -*- nroff -Tutf8 -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH MS-SYS 1 "February 09, 2016"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NOM
+ms-sys \- \['e]crit des secteurs de d\['e]marrage de type Microsoft et autres
+.SH SYNOPSIS
+.B ms-sys
+.RI "[options] [p\['e]riph\['e]rique]"
+.SH DESCRIPTION
+\fBms-sys\fP sert \[`a] \['e]crire des secteurs de d\['e]marrage de type Microsoft, ou autres
+.SH OPTIONS
+La liste des options est donn\['e]e ci-dessous :
+.TP
+.B \-1, \-\-fat12
+\['E]crit un secteur de d\['e]marrage pour FAT12 de type disquette.
+.TP
+.B \-2, \-\-fat32nt
+\['E]crit un secteur de d\['e]marrage pour partition FAT32 de type NT.
+.TP
+.B \-e, \-\-fat32pe
+\['E]crit un secteur de d\['e]marrage pour partition FAT32 de type PE, pour installation USB.
+.TP
+.B \-3, \-\-fat32
+\['E]crit un secteur de d\['e]marrage pour partition FAT32 de type DOS (Win9x).
+.TP
+.B \-4, \-\-fat32free
+\['E]crit un secteur de d\['e]marrage pour partition FAT32 de type FreeDOS.
+.TP
+.B \-5, \-\-fat16free
+\['E]crit un secteur de d\['e]marrage pour partition FAT16 de type FreeDOS.
+.TP
+.B \-6, \-\-fat16
+\['E]crit un secteur de d\['e]marrage pour partition FAT16 de type DOS (Win9x).
+.TP
+.B \-n, \-\-ntfs
+\['E]crit un secteur de d\['e]marrage pour partition NTFS de type Windows 7.
+Cette fonctionnalit\['e] doit \[^e]tre consid\['e]r\['e]e comme exp\['e]rimentale
+et n'a probablement aucun int\['e]r\[^e]t pratique.
+.TP
+.B \-o, \-\-fat16ros
+\['E]crit un secteur de d\['e]marrage pour partition FAT16 de type ReactOS.
+.TP
+.B \-c, \-\-fat32ros
+\['E]crit un secteur de d\['e]marrage pour partition FAT32 de type ReactOS.
+.TP
+.B \-q, \-\-fat32kos
+\['E]crit un secteur de d\['e]marrage pour partition FAT32 de type KolibriOS.
+.TP
+.B \-l, \-\-wipelabel
+R\['e]initialise le label de partition disque du secteur de d\['e]marrage.
+.TP
+.B \-p, \-\-partition
+\['E]crit les infos de partition (secteurs cach\['e]s, nombre de t\[^e]tes et
+ID de disque) dans le secteur de d\['e]marrage. Cela peut \[^e]tre
+n\['e]cessaire pour certaines partitions, en fonction de l'application
+qui a \['e]t\['e] utilis\['e]e pour cr\['e]er le syst\[`e]me de fichiers.
+.TP
+.B \-H <n>, \-\-heads <n>
+Sp\['e]cifie le nombre de t\[^e]tes, lorsque l'option -p est utilis\['e]e
+.TP
+.B \-O <s>, \-\-writeoem <s>
+Applique l'ID OEM <s> au syst\[`e]me de fichiers.
+.TP
+.B \-S <x>, \-\-writewds <x>
+\['E]crit la signature de disque Windows <x> (hex) dans le MBR.
+.TP
+.B \-7, \-\-mbr7
+\['E]crit un Master Boot Record de type Windows 7.
+Cette op\['e]ration ne change pas la signature disque (octets 01b8-01bd).
+Ce MBR peut aussi d\['e]marrer certains types de partitions, au del\[`a] du
+cylindre 1024, en utilisant le mode d'adressage 'LBA'.
+.TP
+.B \-i, \-\-mbrvista
+\['E]crit un Master Boot Record de type Windows Vista.
+Cette op\['e]ration ne change pas la signature disque (octets 01b8-01bd).
+Ce MBR peut aussi d\['e]marrer certains types de partitions, au del\[`a] du
+cylindre 1024, en utilisant le mode d'adressage 'LBA'.
+.TP
+.B \-m, \-\-mbr
+\['E]crit un Master Boot Record de type Windows 2000/XP/2003.
+Cette op\['e]ration ne change pas la signature disque (octets 01b8-01bd).
+Ce MBR peut aussi d\['e]marrer certains types de partitions, au del\[`a] du
+cylindre 1024, en utilisant le mode d'adressage 'LBA'.
+.TP
+.B \-9, \-\-mbr95b
+\['E]crit un Master Boot Record de type Windows 95B/98/98SE/ME.
+Cette op\['e]ration ne change pas la Signature Disque (octets 01b8-01bd)
+ou le p\['e]riph\['e]rique et horodatage de d\['e]marrage (octets 00da-00df).
+Ce MBR peut d\['e]marrer des partitions FAT-LBA de types 0c et 0e au
+del\[`a] du cylindre 1024, en utilisant le mode d'adressage 'LBA'.
+.TP
+.B \-d, \-\-mbrdos
+\['E]crit un Master Boot Record de type DOS/Windows NT.
+Cette op\['e]ration ne change pas la signature disque (octets 01b8-01bd).
+Ce MBR ne peut pas d\['e]marrer au del\[`a] du cylindre 1024, car il ne
+supporte pas le mode d'adressage 'LBA'.
+.TP
+.B \-s, \-\-mbrsyslinux
+\['E]crit un Master Boot Record de type Syslinux.
+Cette op\['e]ration ne change pas la signature disque (octets 01b8-01bd).
+Ce MBR peut aussi d\['e]marrer certains types de partitions, au del\[`a] du
+cylindre 1024, en utilisant le mode d'adressage 'LBA'.
+.TP
+.B \-t, \-\-mbrgptsyslinux
+\['E]crit un bloc GPL Syslinux de type GPT MBR.
+Ce MBR d\['e]marre seulement un syst\[`e]me de partitions GPT.
+.TP
+.B \-a, \-\-mbrreactos
+\['E]crit un Master Boot Record de type ReactOS.
+.TP
+.B \-k, \-\-mbrkolibrios
+\['E]crit un Master Boot Record de type KolibriOS.
+.TP
+.B \-r, \-\-mbrrufus
+\['E]crit un Master Boot Record de type Rufus.
+.TP
+.B \-g, \-\-mbrgrub4dos
+\['E]crit un Master Boot Record de type Grub4DOS.
+.TP
+.B \-b, \-\-mbrgrub2
+\['E]crit un Master Boot Record de type GRUB 2.
+.TP
+.B \-z, \-\-mbrzero
+\['E]crit un Master Boot Record de type vide (z\['e]ro, non-d\['e]marrable).
+Tous les octets, en dehors de la table de partition et de la signature disque
+(octets 01be-01ff), sont mis a z\['e]ro. 
+Similaire \[`a] la table de partition vide DOS cr\['e]\['e]e par fdisk.
+.TP
+.B \-f, \-\-force
+Force l'\['e]criture des secteurs de d\['e]marrage.
+.TP
+.B \-h, \-\-help
+Affiche un sommaire des options.
+.TP
+.B \-v, \-\-version
+Affiche la version du programme.
+.TP
+.B \-w, \-\-write
+\['E]crit les secteurs de d\['e]marrage automatiquement s\['e]lectionn\['e]s.
+.P
+Si ms-sys est d\['e]marr\['e] sans param\[`e]tres, un diagnostic sera effectu\['e] sur le
+p\['e]riph\['e]rique s\['e]lectionn\['e].
+.br
+.SH EXEMPLES
+.P
+Notez que Windows ME est contre-indiqu\['e] pour cr\['e]er des disquettes d\['e]marrables.
+En revanche, Win9x et DOS marchent correctement pour les 2 premiers exemples.
+.P
+.B Cr\['e]ation d'une disquette 1.68 Mo d\['e]marrable
+.TP
+Cet exemple assume que votre installation de Windows est mont\['e]e sous /dos et que vous avez 'mtools' et 'fdformat' install\['e]s.
+.P
+fdformat /dev/fd0u1680
+.br
+mformat a:
+.br
+ms-sys -w /dev/fd0
+.br
+mcopy /dosc/io.sys a:
+.br
+mcopy /dosc/msdos.sys a:
+.br
+mcopy /dosc/command.com a:
+.P
+.B Cr\['e]ation d'une disquette 2.8 Mo d\['e]marrable, pour utilisation sur un CD d\['e]marrable El Torito
+.P
+dd if=/dev/zero of=floppy288.img bs=1024 count=2880
+.br
+/sbin/mkdosfs floppy288.img
+.br
+ms-sys -1 -f floppy288.img
+.br
+su
+.br
+mount -o loop floppy288.img /mnt
+.br
+cp msdos.sys /mnt/
+.br
+cp io.sys /mnt/
+.br
+cp command.com /mnt/
+.br
+(Vous voudrez sans doute ajouter un 'config.sys' et 'autoexec.bat' avec support CD-ROM)
+.br
+umount /mnt
+.br
+exit
+.br
+cp floppy288.img cd-files/boot.img
+.br
+mkisofs -b boot.img -c boot.cat -o cdimage.iso cd\-files
+.br
+(vous pouvez maintenant graver 'cdimage.iso' sur un CD en utilisant cdrecord ou un autre programme)
+.P
+.B Restoration d'une copie de sauvegarde de Win9x ou Win ME sur un nouveau disque dur
+.P
+\['E]tape 1, utilisez GNU parted pour cr\['e]er votre partition et syst\[`e]me de fichiers FAT32 :
+.P
+parted (puis cr\['e]ez la partition et le syst\[`e]me de fichiers)
+.P
+\['E]tape 2, \['e]crivez le MBR :
+.P
+ms-sys -w /dev/hda
+.P
+\['E]tape 3, \['e]crivez les secteurs de d\['e]marrage sur la partition FAT32 :
+.P
+ms-sys -w /dev/hda1
+.P
+\['E]tape 4, montez votre nouveau syst\[`e]me de fichiers :
+.P
+mount /dev/hda1 /mnt
+.P
+\['E]tape 5, lisez votre copie de sauvegarde
+.P
+cd /mnt; tar -xzvf /path/to/my_windows_backup_file.tgz
+.br
+.SH ENVIRONEMENT
+Les variables LANG et LC_ALL ont leur utilisation habituelle. Peu de traductions
+sont toutefois disponibles...
+.br
+.SH BUGS
+Nous avons des rapports concernant des partitions FAT32 non-d\['e]marrables, cr\['e]\['e]es
+avec la commande 'mformat -F c:'. Ce probl\[`e]me nous \[`a] aussi \['e]t\['e] indiqu\['e] pour des
+partitions format\['e]es avec 'mkdosfs' et 'mkfs.vfat'. Une solution de contournement
+consiste \[`a] utiliser GNU parted pour cr\['e]er la partition. Depuis la version 1.1.3,
+ms-sys a aussi l'option \-p pour essayer d'\['e]liminer ce probl\[`e]me.
+Malheureusement, lorsque ms-sys est utilis\['e] avec un noyau Linux 2.6 ou plus
+r\['e]cent, l'utilisation de l'option \-p ou de GNU parted peut aussi se r\['e]v\['e]ler
+infructueuse. Une autre solution possible peut consister \[`a] indiquer le nombre
+de t\[^e]tes avec l'option \-H. Si votre syst\[`e]me a \['e]t\['e] d\['e]marr\['e] avec LILO, le
+nombre correct de t\[^e]tes peut \[^e]tre d\['e]termin\['e] par la commande "lilo -T geom".
+.P
+L'\['e]criture de secteurs de d\['e]marrage avec ms-sys sur une partition NTFS est
+vraisemblablement sans grand int\['e]r\[^e]t pratique. Pour Windows 7, nous avons des
+indications qu'effectuer un 'sysprep' avant de cr\['e]er une image d'une partition
+NTFS peut rendre cette partition d\['e]marrable apr\[`e]s restauration.
+.SH AUTEURS
+Cette page man a \['e]t\['e] traduite par Pete Batard. Le programme ms-sys est
+principalement \['e]crit par Henrik Carlqvist. Le fichier 'CONTRIBUTORS' dans
+l'archive source contient la liste compl\[`e]te des contributions.
+.SH VOYEZ AUSSI
+mformat(1)  fdformat(8)  mkdosfs(8)  mkisofs(8)  parted(8)

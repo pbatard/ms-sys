@@ -1,5 +1,7 @@
 Date       Version  Comment
 ---------------------------------------------------------------------------
+27/2  2016 2.5.3    Added french man page and translation.
+
 16/1  2016 2.5.2    Added german man page,
                     added support for Grub2 and Grub4Dos MBR,
                     added support for KolibriOS MBR and FAT32 boot record,

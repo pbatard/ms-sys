@@ -1015,8 +1015,8 @@ msgstr ""
 
 #: src/main.c:600
 #, c-format
-msgid "Copyright (C) 2009-2015 Free Software Foundation, Inc.\n"
-msgstr "Copyright (C) 2009-2015 Free Software Foundation, Inc.\n"
+msgid "Copyright (C) 2009-2016 Free Software Foundation, Inc.\n"
+msgstr "Copyright (C) 2009-2016 Free Software Foundation, Inc.\n"
 
 #: src/main.c:601
 #, c-format
